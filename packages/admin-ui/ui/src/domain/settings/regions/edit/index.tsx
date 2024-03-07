@@ -2,7 +2,7 @@ import { useAdminRegion } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import Spinner from "../../../../components/atoms/spinner"
 import GeneralSection from "./general-section"
-import ReturnShippingOptions from "./return-shipping-options"
+// import ReturnShippingOptions from "./return-shipping-options"
 import ShippingOptions from "./shipping-options"
 
 type Props = {
@@ -47,7 +47,7 @@ const EditRegion = ({ id }: Props) => {
     <div className="gap-y-xsmall flex flex-col">
       <GeneralSection region={region} />
       <ShippingOptions region={region} />
-      <ReturnShippingOptions region={region} />
+      {/* <ReturnShippingOptions region={region} /> */}
     </div>
   )
 }

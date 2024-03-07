@@ -6,15 +6,15 @@ import Spacer from "../../components/atoms/spacer"
 import SettingContainer from "../../components/extensions/setting-container"
 import SettingsPageErrorElement from "../../components/extensions/setting-container/setting-error-element"
 import FeatureToggle from "../../components/fundamentals/feature-toggle"
-import ArrowUTurnLeft from "../../components/fundamentals/icons/arrow-uturn-left"
-import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
-import CoinsIcon from "../../components/fundamentals/icons/coins-icon"
+// import ArrowUTurnLeft from "../../components/fundamentals/icons/arrow-uturn-left"
+// import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
+// import CoinsIcon from "../../components/fundamentals/icons/coins-icon"
 import CrosshairIcon from "../../components/fundamentals/icons/crosshair-icon"
 import GearIcon from "../../components/fundamentals/icons/gear-icon"
 import HappyIcon from "../../components/fundamentals/icons/happy-icon"
-import KeyIcon from "../../components/fundamentals/icons/key-icon"
+// import KeyIcon from "../../components/fundamentals/icons/key-icon"
 import MapPinIcon from "../../components/fundamentals/icons/map-pin-icon"
-import TaxesIcon from "../../components/fundamentals/icons/taxes-icon"
+// import TaxesIcon from "../../components/fundamentals/icons/taxes-icon"
 import UsersIcon from "../../components/fundamentals/icons/users-icon"
 import { useSettings } from "../../providers/setting-provider"
 import CurrencySettings from "./currencies"
@@ -34,19 +34,19 @@ type SettingsCardType = {
 }
 
 const settings: SettingsCardType[] = [
-  {
-    heading: "API Key Management",
-    description: "Create and manage API keys",
-    icon: KeyIcon,
-    to: "/a/publishable-api-keys",
-    feature_flag: "publishable_api_keys",
-  },
-  {
-    heading: "Currencies",
-    description: "Manage the currencies of your store",
-    icon: CoinsIcon,
-    to: "/a/settings/currencies",
-  },
+  // {
+  //   heading: "API Key Management",
+  //   description: "Create and manage API keys",
+  //   icon: KeyIcon,
+  //   to: "/a/publishable-api-keys",
+  //   feature_flag: "publishable_api_keys",
+  // },
+  // {
+  //   heading: "Currencies",
+  //   description: "Manage the currencies of your store",
+  //   icon: CoinsIcon,
+  //   to: "/a/settings/currencies",
+  // },
   {
     heading: "Personal Information",
     description: "Manage your Medusa profile",
@@ -59,31 +59,31 @@ const settings: SettingsCardType[] = [
     icon: MapPinIcon,
     to: "/a/settings/regions",
   },
-  {
-    heading: "Return Reasons",
-    description: "Manage reasons for returned items",
-    icon: ArrowUTurnLeft,
-    to: "/a/settings/return-reasons",
-  },
-  {
-    heading: "Sales Channels",
-    description: "Control which product are available in which channels",
-    icon: ChannelsIcon,
-    feature_flag: "sales_channels",
-    to: "/a/sales-channels",
-  },
+  // {
+  //   heading: "Return Reasons",
+  //   description: "Manage reasons for returned items",
+  //   icon: ArrowUTurnLeft,
+  //   to: "/a/settings/return-reasons",
+  // },
+  // {
+  //   heading: "Sales Channels",
+  //   description: "Control which product are available in which channels",
+  //   icon: ChannelsIcon,
+  //   feature_flag: "sales_channels",
+  //   to: "/a/sales-channels",
+  // },
   {
     heading: "Store Details",
     description: "Manage your business details",
     icon: CrosshairIcon,
     to: "/a/settings/details",
   },
-  {
-    heading: "Taxes",
-    description: "Manage taxes across regions and products",
-    icon: TaxesIcon,
-    to: "/a/settings/taxes",
-  },
+  // {
+  //   heading: "Taxes",
+  //   description: "Manage taxes across regions and products",
+  //   icon: TaxesIcon,
+  //   to: "/a/settings/taxes",
+  // },
   {
     heading: "The Team",
     description: "Manage users of your Medusa Store",

@@ -6,10 +6,10 @@ import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { useRoutes } from "../../../providers/route-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import CartIcon from "../../fundamentals/icons/cart-icon"
-import CashIcon from "../../fundamentals/icons/cash-icon"
+// import CashIcon from "../../fundamentals/icons/cash-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
-import GiftIcon from "../../fundamentals/icons/gift-icon"
-import SaleIcon from "../../fundamentals/icons/sale-icon"
+// import GiftIcon from "../../fundamentals/icons/gift-icon"
+// import SaleIcon from "../../fundamentals/icons/sale-icon"
 import SquaresPlus from "../../fundamentals/icons/squares-plus"
 import SwatchIcon from "../../fundamentals/icons/swatch-icon"
 import TagIcon from "../../fundamentals/icons/tag-icon"
@@ -94,7 +94,7 @@ const Sidebar: React.FC = () => {
               text={t("sidebar-inventory", "Inventory")}
             />
           )}
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
@@ -111,7 +111,7 @@ const Sidebar: React.FC = () => {
             icon={<CashIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-pricing", "Pricing")}
-          />
+          /> */}
           {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
 
