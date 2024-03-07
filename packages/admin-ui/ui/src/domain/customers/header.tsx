@@ -19,7 +19,9 @@ function CustomersPageTableHeader(props: P) {
           navigate(`/a/customers/groups`)
         }
       }}
-      views={["customers", "groups"]}
+      views={["customers"]}
+      // TODO: uncomment this when you want to show customer groups
+      // views={["customers", "groups"]}
       activeView={props.activeView}
     />
   )
