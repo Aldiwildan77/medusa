@@ -76,21 +76,21 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
   } = useToggleState()
 
   const actions: ActionType[] = [
-    {
-      icon: <BackIcon size={20} />,
-      label: t("timeline-request-return", "Request Return"),
-      onClick: () => setShowRequestReturn(true),
-    },
-    {
-      icon: <RefreshIcon size={20} />,
-      label: t("timeline-register-exchange", "Register Exchange"),
-      onClick: () => setshowCreateSwap(true),
-    },
-    {
-      icon: <AlertIcon size={20} />,
-      label: t("timeline-register-claim", "Register Claim"),
-      onClick: openRegisterClaim,
-    },
+    // {
+    //   icon: <BackIcon size={20} />,
+    //   label: t("timeline-request-return", "Request Return"),
+    //   onClick: () => setShowRequestReturn(true),
+    // },
+    // {
+    //   icon: <RefreshIcon size={20} />,
+    //   label: t("timeline-register-exchange", "Register Exchange"),
+    //   onClick: () => setshowCreateSwap(true),
+    // },
+    // {
+    //   icon: <AlertIcon size={20} />,
+    //   label: t("timeline-register-claim", "Register Claim"),
+    //   onClick: openRegisterClaim,
+    // },
   ]
 
   const handleCreateNote = (value: string | undefined) => {

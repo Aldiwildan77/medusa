@@ -151,18 +151,19 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
 
   const actionables = useMemo(() => {
     const actionables: ActionType[] = []
-    if (isFeatureEnabled("order_editing")) {
-      actionables.push({
-        label: t("detail-cards-edit-order", "Edit Order"),
-        onClick: showModal,
-      })
-    }
-    if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
-      actionables.push({
-        label: t("detail-cards-allocate", "Allocate"),
-        onClick: showReservationModal,
-      })
-    }
+    // TODO: uncomment this for edit order
+    // if (isFeatureEnabled("order_editing")) {
+    //   actionables.push({
+    //     label: t("detail-cards-edit-order", "Edit Order"),
+    //     onClick: showModal,
+    //   })
+    // }
+    // if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
+    //   actionables.push({
+    //     label: t("detail-cards-allocate", "Allocate"),
+    //     onClick: showReservationModal,
+    //   })
+    // }
     return actionables
   }, [showModal, isFeatureEnabled, showReservationModal, allItemsReserved])
 

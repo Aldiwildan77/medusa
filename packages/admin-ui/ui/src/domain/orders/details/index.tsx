@@ -18,10 +18,10 @@ import OrderEditProvider, { OrderEditContext } from "../edit/context"
 import {
   DisplayTotal,
   FormattedAddress,
-  FormattedFulfillment,
-  FulfillmentStatusComponent,
+  // FormattedFulfillment,
+  // FulfillmentStatusComponent,
   OrderStatusComponent,
-  PaymentActionables,
+  // PaymentActionables,
   PaymentStatusComponent,
 } from "./templates"
 
@@ -36,17 +36,17 @@ import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
 import WidgetContainer from "../../../components/extensions/widget-container"
-import Button from "../../../components/fundamentals/button"
+// import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
 import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
 import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
 import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
-import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
+// import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
 import MailIcon from "../../../components/fundamentals/icons/mail-icon"
-import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
-import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
+// import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
+// import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import { ActionType } from "../../../components/molecules/actionables"
-import JSONView from "../../../components/molecules/json-view"
+// import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
 import Timeline from "../../../components/organisms/timeline"
@@ -257,36 +257,36 @@ const OrderDetails = () => {
       icon: <DetailsIcon size={"20"} />,
       onClick: () => navigate(`/a/customers/${order?.customer.id}`),
     },
-    {
-      label: t("details-transfer-ownership", "Transfer ownership"),
-      icon: <RefreshIcon size={"20"} />,
-      onClick: () => toggleTransferOrderModal(),
-    },
+    // {
+    //   label: t("details-transfer-ownership", "Transfer ownership"),
+    //   icon: <RefreshIcon size={"20"} />,
+    //   onClick: () => toggleTransferOrderModal(),
+    // },
   ]
 
-  customerActionables.push({
-    label: t("details-edit-shipping-address", "Edit Shipping Address"),
-    icon: <TruckIcon size={"20"} />,
-    onClick: () => {
-      setAddressModal({
-        address: order?.shipping_address,
-        type: AddressType.SHIPPING,
-      })
-      openAddressModal()
-    },
-  })
+  // customerActionables.push({
+  //   label: t("details-edit-shipping-address", "Edit Shipping Address"),
+  //   icon: <TruckIcon size={"20"} />,
+  //   onClick: () => {
+  //     setAddressModal({
+  //       address: order?.shipping_address,
+  //       type: AddressType.SHIPPING,
+  //     })
+  //     openAddressModal()
+  //   },
+  // })
 
-  customerActionables.push({
-    label: t("details-edit-billing-address", "Edit Billing Address"),
-    icon: <DollarSignIcon size={"20"} />,
-    onClick: () => {
-      setAddressModal({
-        address: order?.billing_address,
-        type: AddressType.BILLING,
-      })
-      openAddressModal()
-    },
-  })
+  // customerActionables.push({
+  //   label: t("details-edit-billing-address", "Edit Billing Address"),
+  //   icon: <DollarSignIcon size={"20"} />,
+  //   onClick: () => {
+  //     setAddressModal({
+  //       address: order?.billing_address,
+  //       type: AddressType.BILLING,
+  //     })
+  //     openAddressModal()
+  //   },
+  // })
 
   if (order?.email) {
     customerActionables.push({
@@ -361,14 +361,16 @@ const OrderDetails = () => {
                   )}
                   status={<OrderStatusComponent status={order.status} />}
                   forceDropdown={true}
-                  actionables={[
-                    {
-                      label: t("details-cancel-order", "Cancel Order"),
-                      icon: <CancelIcon size={"20"} />,
-                      variant: "danger",
-                      onClick: () => handleDeleteOrder(),
-                    },
-                  ]}
+                  actionables={
+                    [
+                      // {
+                      //   label: t("details-cancel-order", "Cancel Order"),
+                      //   icon: <CancelIcon size={"20"} />,
+                      //   variant: "danger",
+                      //   onClick: () => handleDeleteOrder(),
+                      // },
+                    ]
+                  }
                 >
                   <div className="mt-6 flex space-x-6 divide-x">
                     <div className="flex flex-col">
@@ -410,13 +412,13 @@ const OrderDetails = () => {
                   status={
                     <PaymentStatusComponent status={order.payment_status} />
                   }
-                  customActionable={
-                    <PaymentActionables
-                      order={order}
-                      capturePayment={capturePayment}
-                      showRefundMenu={() => setShowRefund(true)}
-                    />
-                  }
+                  // customActionable={
+                  //   <PaymentActionables
+                  //     order={order}
+                  //     capturePayment={capturePayment}
+                  //     showRefundMenu={() => setShowRefund(true)}
+                  //   />
+                  // }
                 >
                   <div className="mt-6">
                     {order.payments.map((payment) => (
@@ -473,7 +475,8 @@ const OrderDetails = () => {
                     </div>
                   </div>
                 </BodyCard>
-                <BodyCard
+                {/* TODO: uncomment this to show fulfillment card */}
+                {/* <BodyCard
                   className={"h-auto min-h-0 w-full"}
                   title={t("details-fulfillment", "Fulfillment")}
                   status={
@@ -519,7 +522,7 @@ const OrderDetails = () => {
                       ))}
                     </div>
                   </div>
-                </BodyCard>
+                </BodyCard> */}
                 <BodyCard
                   className={"h-auto min-h-0 w-full"}
                   title={t("details-customer", "Customer")}
