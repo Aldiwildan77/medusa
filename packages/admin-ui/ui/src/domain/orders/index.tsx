@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
-import { Route, Routes, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { Route, Routes, useNavigate } from "react-router-dom"
 
 import { useAdminCreateBatchJob } from "medusa-react"
 import Spacer from "../../components/atoms/spacer"
@@ -21,7 +21,11 @@ import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
 
-const VIEWS = ["orders", "drafts"]
+// TODO: uncomment when we have more views
+const VIEWS = [
+  "orders",
+  // "drafts"
+]
 
 const OrderIndex = () => {
   const view = "orders"

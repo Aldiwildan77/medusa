@@ -1,8 +1,8 @@
 import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { useWidgets } from "../../../providers/widget-provider"
-import { useTranslation } from "react-i18next"
 import InputError from "../../atoms/input-error"
 import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
@@ -67,7 +67,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">
           <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-            {t("login-card-log-in-to-medusa", "Log in to Medusa")}
+            {t("login-card-log-in-to-medusa", "Log in to Admin Dashboard")}
           </h1>
           <div>
             <SigninInput
