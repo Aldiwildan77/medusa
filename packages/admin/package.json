@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "build:admin": "medusa-admin build --deployment"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,7 @@
 /loaders
 /setup
 /lib
+/build
 
 # Platform-specific files
 .DS_Store
