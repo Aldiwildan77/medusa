@@ -431,7 +431,7 @@ export const currencies: CurrenciesType = {
     symbol: "Rp",
     name: "Indonesian Rupiah",
     symbol_native: "Rp",
-    decimal_digits: 2,
+    decimal_digits: 0,
     rounding: 0,
     code: "IDR",
     name_plural: "Indonesian rupiahs",

@@ -224,6 +224,8 @@ function CurrencyCell(props: CurrencyCellProps) {
           allowDecimals={currencyMeta?.decimal_digits > 0}
           decimalScale={isEditable ? undefined : currencyMeta?.decimal_digits}
           customInput={isEditable ? currencyInput : currencySpan}
+          groupSeparator="."
+          decimalSeparator=","
           allowNegativeValue={false}
           value={localValue.value}
           placeholder="-"
