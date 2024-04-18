@@ -9,7 +9,7 @@ import CartIcon from "../../fundamentals/icons/cart-icon"
 // import CashIcon from "../../fundamentals/icons/cash-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
 // import GiftIcon from "../../fundamentals/icons/gift-icon"
-// import SaleIcon from "../../fundamentals/icons/sale-icon"
+import SaleIcon from "../../fundamentals/icons/sale-icon"
 import SquaresPlus from "../../fundamentals/icons/squares-plus"
 import SwatchIcon from "../../fundamentals/icons/swatch-icon"
 import TagIcon from "../../fundamentals/icons/tag-icon"
@@ -94,13 +94,13 @@ const Sidebar: React.FC = () => {
               text={t("sidebar-inventory", "Inventory")}
             />
           )}
-          {/* <SidebarMenuItem
+          <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-discounts", "Discounts")}
           />
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
             icon={<GiftIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
