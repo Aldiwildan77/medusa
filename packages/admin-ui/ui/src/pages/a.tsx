@@ -23,6 +23,7 @@ import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
 import { useRoutes } from "../providers/route-provider"
 import { isRoute } from "../utils/extensions"
+import { AnalyticsPage } from "./analytics"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -63,6 +64,7 @@ const DashboardRoutes = () => {
             element={<PublishableApiKeys />}
           />
           <Route path="inventory/*" element={<Inventory />} />
+          <Route path="analytics/*" element={<AnalyticsPage />} />
           {injectedRoutes.map((route, index) => {
             return (
               <Route

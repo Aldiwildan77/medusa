@@ -62,7 +62,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
         </h1>
         <span className="inter-base-regular text-grey-50 mb-large text-center">
           <Trans t={t} i18nKey="reset-token-card-password-reset-description">
-            Enter your email address below, and we'll
+            Enter your email address below, and we&apos;ll
             <br />
             send you instructions on how to reset
             <br />
@@ -73,7 +73,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           <>
             <div className="w-[280px]">
               <SigninInput
-                placeholder={t("reset-token-card-email", "Email")}
+                placeholder={t("reset-token-card-email", "Email") || ""}
                 {...register("email", {
                   required: FormValidator.required("Email"),
                   pattern: {
