@@ -7,6 +7,7 @@ import RouteErrorElement from "../components/extensions/route-container/route-er
 import PrivateRoute from "../components/private-route"
 import SEO from "../components/seo"
 import Layout from "../components/templates/layout"
+import { AffiliateRoutes } from "../domain/affiliate/AffiliateRoutes"
 import Collections from "../domain/collections"
 import Customers from "../domain/customers"
 import Discounts from "../domain/discounts"
@@ -65,6 +66,7 @@ const DashboardRoutes = () => {
           />
           <Route path="inventory/*" element={<Inventory />} />
           <Route path="analytics/*" element={<AnalyticsPage />} />
+          <Route path="affiliate/*" element={<AffiliateRoutes />} />
           {injectedRoutes.map((route, index) => {
             return (
               <Route

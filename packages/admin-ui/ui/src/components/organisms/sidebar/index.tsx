@@ -17,6 +17,7 @@ import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
+import { UserGroup } from "@medusajs/icons"
 
 const ICON_SIZE = 20
 
@@ -106,6 +107,12 @@ const Sidebar: React.FC = () => {
             icon={<ReorderIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={"Analytics"}
+          />
+          <SidebarMenuItem
+            pageLink={"/a/affiliate"}
+            icon={<UserGroup />}
+            triggerHandler={triggerHandler}
+            text={"Affiliate"}
           />
           {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
