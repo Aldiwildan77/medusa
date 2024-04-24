@@ -1,43 +1,66 @@
-// import { AdminAnalyticsConfigRes } from "@medusajs/medusa"
-// import axios from "axios"
-// import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
+import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
+import { ShopCampaignAPIResponse } from "../types/affiliate"
 
-// const AFFILIATE_BASE_URL = "/affiliate"
-
-// const client = axios.create({
-//   baseURL: MEDUSA_BACKEND_URL,
-//   withCredentials: true,
-// })
+const AFFILIATE_BASE_URL = "/affiliate"
 
 export type ShopCampaign = {
-  commissionRate: string
-  type: "percentage" | "fixed"
+  serial: string
+  commissionRate: number
+  type: "PERCENTAGE" | "FIXED"
 }
 
 export const getShopCampaign = async (): Promise<ShopCampaign> => {
-  // TODO: fetch from API
-  // const { data } = await client.get(`${AFFILIATE_BASE_URL}/shop-campaign`)
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?user_target_type=ALL&product_target_type=ALL&sort_by=ASC&order_by=CREATED_AT&limit=1&page=1`
+  ).then(async (res) => res.json())
 
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  const data = res.data[0] as ShopCampaignAPIResponse
+  const shopCampaign = data.product_targets.find((t) => t.reference === "ALL")
 
   return {
-    commissionRate: "7",
-    type: "percentage",
+    serial: data.serial,
+    commissionRate: shopCampaign?.amount || 0,
+    type: shopCampaign?.type === "PERCENTAGE" ? "PERCENTAGE" : "FIXED",
   }
 }
 
 export type UpdateShopCampaignPayload = {
-  commissionRate: string
+  serial: string
+  commissionRate: number
 }
 
 export const updateShopCampaign = async (
-  _payload: UpdateShopCampaignPayload
+  payload: UpdateShopCampaignPayload
 ): Promise<null> => {
-  // TODO: update in API
-  // const { data } = await client.get(`${AFFILIATE_BASE_URL}/shop-campaign`)
+  const body = {
+    user_target_type: "ALL",
+    product_target_type: "ALL",
+    product_targets: [
+      {
+        reference: "ALL",
+        amount: payload.commissionRate,
+        type: "PERCENTAGE",
+      },
+    ],
+  }
 
-  console.log("updating...")
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/group/${payload.serial}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  const json = await res.text()
+  // throw error if status code is not 200
+  if (!res.ok) {
+    // throw error from response
+    throw new Error(json)
+  }
 
   return null
 }
