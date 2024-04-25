@@ -1,3 +1,4 @@
+import { capitalize } from "lodash"
 import {
   useAdminCancelClaimFulfillment,
   useAdminCancelFulfillment,
@@ -6,7 +7,6 @@ import {
 import { useTranslation } from "react-i18next"
 import IconBadge from "../../../../components/fundamentals/icon-badge"
 import BuildingsIcon from "../../../../components/fundamentals/icons/buildings-icon"
-import CancelIcon from "../../../../components/fundamentals/icons/cancel-icon"
 import PackageIcon from "../../../../components/fundamentals/icons/package-icon"
 import Actionables from "../../../../components/molecules/actionables"
 import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
@@ -14,7 +14,6 @@ import useNotification from "../../../../hooks/use-notification"
 import useStockLocations from "../../../../hooks/use-stock-locations"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { TrackingLink } from "./tracking-link"
-import { capitalize } from "lodash"
 
 export const FormattedFulfillment = ({
   setFullfilmentToShip,
@@ -181,11 +180,11 @@ export const FormattedFulfillment = ({
                 icon: <PackageIcon size={"20"} />,
                 onClick: () => setFullfilmentToShip(fulfillment),
               },
-              {
-                label: t("templates-cancel-fulfillment", "Cancel Fulfillment"),
-                icon: <CancelIcon size={"20"} />,
-                onClick: () => handleCancelFulfillment(),
-              },
+              // {
+              //   label: t("templates-cancel-fulfillment", "Cancel Fulfillment"),
+              //   icon: <CancelIcon size={"20"} />,
+              //   onClick: () => handleCancelFulfillment(),
+              // },
             ]}
           />
         </div>

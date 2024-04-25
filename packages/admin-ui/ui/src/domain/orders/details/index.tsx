@@ -18,6 +18,8 @@ import OrderEditProvider, { OrderEditContext } from "../edit/context"
 import {
   DisplayTotal,
   FormattedAddress,
+  FormattedFulfillment,
+  FulfillmentStatusComponent,
   // FormattedFulfillment,
   // FulfillmentStatusComponent,
   OrderStatusComponent,
@@ -46,6 +48,8 @@ import MailIcon from "../../../components/fundamentals/icons/mail-icon"
 // import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import { ActionType } from "../../../components/molecules/actionables"
 // import JSONView from "../../../components/molecules/json-view"
+import { Button } from "@medusajs/ui"
+import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
 import Timeline from "../../../components/organisms/timeline"
@@ -359,7 +363,7 @@ const OrderDetails = () => {
                     "D MMMM YYYY hh:mm a"
                   )}
                   status={<OrderStatusComponent status={order.status} />}
-                  forceDropdown={true}
+                  forceDropdown={false}
                   actionables={
                     [
                       // {
@@ -483,7 +487,7 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 {/* TODO: uncomment this to show fulfillment card */}
-                {/* <BodyCard
+                <BodyCard
                   className={"h-auto min-h-0 w-full"}
                   title={t("details-fulfillment", "Fulfillment")}
                   status={
@@ -529,7 +533,7 @@ const OrderDetails = () => {
                       ))}
                     </div>
                   </div>
-                </BodyCard> */}
+                </BodyCard>
                 <BodyCard
                   className={"h-auto min-h-0 w-full"}
                   title={t("details-customer", "Customer")}

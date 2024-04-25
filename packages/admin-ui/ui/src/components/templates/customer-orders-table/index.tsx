@@ -1,9 +1,8 @@
 import { Order } from "@medusajs/medusa"
 import { useAdminOrders } from "medusa-react"
 import { useState } from "react"
-import { useTable, usePagination } from "react-table"
 import { useTranslation } from "react-i18next"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
+import { usePagination, useTable } from "react-table"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import TransferOrdersModal from "../transfer-orders-modal"
@@ -100,10 +99,16 @@ const CustomerOrdersTable = ({ id }: Props) => {
           <Table.Head>
             {headerGroups.map((headerGroup) => {
               return (
-                <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
+                <Table.HeadRow
+                  {...headerGroup.getHeaderGroupProps()}
+                  key={headerGroup.id}
+                >
                   {headerGroup.headers.map((column) => {
                     return (
-                      <Table.HeadCell {...column.getHeaderProps()}>
+                      <Table.HeadCell
+                        {...column.getHeaderProps()}
+                        key={column.id}
+                      >
                         {column.render("Header")}
                       </Table.HeadCell>
                     )
@@ -117,25 +122,28 @@ const CustomerOrdersTable = ({ id }: Props) => {
               prepareRow(row)
               return (
                 <Table.Row
-                  forceDropdown
-                  actions={[
-                    {
-                      label: t(
-                        "customer-orders-table-transfer-order",
-                        "Transfer order"
-                      ),
-                      icon: <RefreshIcon size={"20"} />,
-                      onClick: () => {
-                        setSelectedOrderForTransfer(row.original as Order)
-                      },
-                    },
-                  ]}
+                  forceDropdown={false}
+                  actions={
+                    [
+                      // {
+                      //   label: t(
+                      //     "customer-orders-table-transfer-order",
+                      //     "Transfer order"
+                      //   ),
+                      //   icon: <RefreshIcon size={"20"} />,
+                      //   onClick: () => {
+                      //     setSelectedOrderForTransfer(row.original as Order)
+                      //   },
+                      // },
+                    ]
+                  }
                   {...row.getRowProps()}
                   linkTo={`/a/orders/${row.original.id}`}
+                  key={row.id}
                 >
                   {row.cells.map((cell) => {
                     return (
-                      <Table.Cell {...cell.getCellProps()}>
+                      <Table.Cell {...cell.getCellProps()} key={cell.value}>
                         {cell.render("Cell")}
                       </Table.Cell>
                     )
