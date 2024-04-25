@@ -38,7 +38,6 @@ import Tooltip from "../../../components/atoms/tooltip"
 import WidgetContainer from "../../../components/extensions/widget-container"
 // import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
-import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
 import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
 import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
 // import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
@@ -399,6 +398,14 @@ const OrderDetails = () => {
                         {order.payments
                           ?.map((p) => capitalize(p.provider_id))
                           .join(", ")}
+                      </div>
+                    </div>
+                    <div className="flex flex-col pl-6">
+                      <div className="inter-smaller-regular text-grey-50 mb-1">
+                        Affiliate Code
+                      </div>
+                      <div>
+                        {(order.metadata?.affiliator_code as string) || "N/A"}
                       </div>
                     </div>
                   </div>
