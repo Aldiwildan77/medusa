@@ -7915,6 +7915,7 @@ __metadata:
     copy-to-clipboard: ^3.3.1
     copy-webpack-plugin: ^11.0.0
     css-loader: ^6.8.1
+    dayjs: ^1.11.10
     duplicate-dependencies-webpack-plugin: ^1.0.2
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
@@ -25432,6 +25433,13 @@ __metadata:
   version: 1.10.4
   resolution: "dayjs@npm:1.10.4"
   checksum: ff5f760db0f169ca7ff93aab60fb0fafd9592ad4d45fff989fca642cf3c356ff6ed630339bcf5405e81361518fbd1619d73a336c3b092fdd42665469118b8929
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.10":
+  version: 1.11.10
+  resolution: "dayjs@npm:1.11.10"
+  checksum: 4de9af50639d47df87f2e15fa36bb07e0f9ed1e9c52c6caa1482788ee9a384d668f1dbd00c54f82aaab163db07d61d2899384b8254da3a9184fc6deca080e2fe
   languageName: node
   linkType: hard
 

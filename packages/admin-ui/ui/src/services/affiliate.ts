@@ -1,5 +1,5 @@
 import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
-import { ShopCampaignAPIResponse } from "../types/affiliate"
+import { AffiliateGroups, AffiliatePagination } from "../types/affiliate"
 
 const AFFILIATE_BASE_URL = "/affiliate"
 
@@ -14,7 +14,7 @@ export const getShopCampaign = async (): Promise<ShopCampaign> => {
     `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?user_target_type=ALL&product_target_type=ALL&sort_by=ASC&order_by=CREATED_AT&limit=1&page=1`
   ).then(async (res) => res.json())
 
-  const data = res.data[0] as ShopCampaignAPIResponse
+  const data = res.data[0] as AffiliateGroups
   const shopCampaign = data.product_targets.find((t) => t.reference === "ALL")
 
   return {
@@ -63,4 +63,24 @@ export const updateShopCampaign = async (
   }
 
   return null
+}
+
+export type GetTargettedCampaignPayload = {
+  page: number
+  limit: number
+}
+
+export type GetTargettedCampaignResponses = {
+  data: AffiliateGroups[]
+  pagination: AffiliatePagination
+}
+
+export const getTargettedCampaign = async (
+  payload: GetTargettedCampaignPayload
+): Promise<GetTargettedCampaignResponses> => {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?user_target_type=SPECIFIC&sort_by=DESC&order_by=CREATED_AT&limit=${payload.limit}&page=${payload.page}`
+  ).then(async (res) => res.json())
+
+  return res as GetTargettedCampaignResponses
 }
