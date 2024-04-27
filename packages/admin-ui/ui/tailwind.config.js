@@ -42,6 +42,18 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        red: {
+          5: "#FEF2F2",
+          10: "#FEE2E2",
+          20: "#FECACA",
+          30: "#FCA5A5",
+          40: "#F87171",
+          50: "#EF4444",
+          60: "#DC2626",
+          70: "#B91C1C",
+          80: "#991B1B",
+          90: "#7F1D1D",
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",

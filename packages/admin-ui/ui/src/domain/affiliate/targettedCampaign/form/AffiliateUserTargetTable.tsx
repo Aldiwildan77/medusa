@@ -9,10 +9,18 @@ import { useTargettedCampaignColumn } from "./useAffiliateUserTargetColumn"
 import { useGetAffiliatorList } from "../../affiliateHooks"
 import { AffiliateGroups } from "../../../../types/affiliate"
 import BodyCard from "../../../../components/organisms/body-card"
+import { FieldErrors, UseFormSetValue } from "react-hook-form"
+import { TargettedCampaignForm } from "./targettedCampaignSchema"
 
 const LIMIT = 2
 
-export const AffiliateUserTargetTable = () => {
+type Props = {
+  errors: Partial<FieldErrors<TargettedCampaignForm>>
+  setValue: UseFormSetValue<TargettedCampaignForm>
+  values: TargettedCampaignForm
+}
+
+export const AffiliateUserTargetTable = (props: Props) => {
   const location = useLocation()
   const [selectedAffiliatorCustomerIds, setSelectedAffiliatorCustomerIds] =
     useState<string[]>([])
@@ -27,17 +35,22 @@ export const AffiliateUserTargetTable = () => {
   // const [search, setSearch] = useState()
   const [numPages, setNumPages] = useState(0)
 
-  const getTargettedCampaign = useGetAffiliatorList({
-    limit: filters.limit,
-    page: filters.page,
-  })
+  const getTargettedCampaign = useGetAffiliatorList(
+    {
+      limit: filters.limit,
+      page: filters.page,
+    },
+    {
+      onSuccess: (data) => {
+        setNumPages(data.pagination.total_pages)
+      },
+    }
+  )
 
   useEffect(() => {
-    const controlledPageCount = Number(
-      getTargettedCampaign.data?.pagination.total_pages
-    )
-    setNumPages(controlledPageCount)
-  }, [getTargettedCampaign.data])
+    props.setValue("customerIds", selectedAffiliatorCustomerIds)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAffiliatorCustomerIds])
 
   const [columns] = useTargettedCampaignColumn({
     selectedAffiliatorCustomerIds: selectedAffiliatorCustomerIds,
@@ -175,6 +188,11 @@ export const AffiliateUserTargetTable = () => {
             </Table.Body>
           </Table>
         </TableContainer>
+        {props.errors.customerIds && (
+          <p className="text-sm text-red-500">
+            {props.errors.customerIds.message}
+          </p>
+        )}
       </div>
     </BodyCard>
   )
