@@ -12,7 +12,7 @@ import TableContainer from "../../organisms/table-container"
 import { useCustomerColumns } from "./use-customer-columns"
 import { useCustomerFilters } from "./use-customer-filters"
 
-const DEFAULT_PAGE_SIZE = 15
+const DEFAULT_PAGE_SIZE = 3
 
 const defaultQueryProps = {
   expand: "orders",

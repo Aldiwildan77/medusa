@@ -22,3 +22,16 @@ export type AffiliatePagination = {
   limit: number
   total_pages: number
 }
+
+export type Affiliator = {
+  name: string
+  customer_id: string
+  affiliate_code: string
+  total_product_affiliated: number
+  social_media: AffiliatorSocialMedia[]
+}
+
+export type AffiliatorSocialMedia = {
+  platform: string
+  username: string
+}

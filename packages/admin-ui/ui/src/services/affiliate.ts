@@ -1,5 +1,9 @@
 import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
-import { AffiliateGroups, AffiliatePagination } from "../types/affiliate"
+import {
+  AffiliateGroups,
+  AffiliatePagination,
+  Affiliator,
+} from "../types/affiliate"
 
 const AFFILIATE_BASE_URL = "/affiliate"
 
@@ -83,4 +87,42 @@ export const getTargettedCampaign = async (
   ).then(async (res) => res.json())
 
   return res as GetTargettedCampaignResponses
+}
+
+export type GetListAffiliatorPayload = {
+  page: number
+  limit: number
+  search?: string
+  orderBy?: "CREATED_AT" | "NAME" | "TOTAL_COMMISSION"
+  sortBy?: "ASC" | "DESC"
+}
+
+export type GetListAffiliatorResponses = {
+  data: Affiliator[]
+  pagination: AffiliatePagination
+}
+
+export const getListAffiliator = async (
+  payload: GetListAffiliatorPayload
+): Promise<GetListAffiliatorResponses> => {
+  const url = new URL(`${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/affiliators`)
+
+  if (payload.search) {
+    url.searchParams.append("search", payload.search)
+  }
+
+  if (payload.orderBy) {
+    url.searchParams.append("order_by", payload.orderBy)
+  }
+
+  if (payload.sortBy) {
+    url.searchParams.append("sort_by", payload.sortBy)
+  }
+
+  url.searchParams.append("limit", payload.limit.toString())
+  url.searchParams.append("page", payload.page.toString())
+
+  const res = await fetch(url.toString()).then(async (res) => res.json())
+
+  return res as GetListAffiliatorResponses
 }

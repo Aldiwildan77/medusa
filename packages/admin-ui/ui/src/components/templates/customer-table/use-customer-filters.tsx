@@ -174,7 +174,7 @@ const parseQueryString = (
 ): CustomerFilterState => {
   const defaultVal: CustomerFilterState = {
     offset: 0,
-    limit: 15,
+    limit: 3,
     additionalFilters: additionals,
   }
 

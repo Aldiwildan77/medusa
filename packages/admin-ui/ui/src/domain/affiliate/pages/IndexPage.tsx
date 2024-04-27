@@ -1,5 +1,5 @@
-import { ShopCampaign } from "./ShopCampaign"
-import { TargettedCampaignTable } from "./targettedCampaign/TargettedCampaignTable"
+import { ShopCampaign } from "../ShopCampaign"
+import { TargettedCampaignTable } from "../targettedCampaign/TargettedCampaignTable"
 
 export function AffiliateIndex() {
   return (

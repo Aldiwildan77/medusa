@@ -1,7 +1,5 @@
-import { isEmpty } from "lodash"
-import qs from "qs"
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
 import type { Row } from "react-table"
 import { useTranslation } from "react-i18next"
@@ -27,6 +25,7 @@ const LIMIT = 10
 export const TargettedCampaignTable = () => {
   const location = useLocation()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const { paginate, filters } = useTargettedCampaignFilters(
     location.search,
@@ -40,8 +39,8 @@ export const TargettedCampaignTable = () => {
   const [numPages, setNumPages] = useState(0)
 
   const getTargettedCampaign = useGetTargettedCampaign({
-    limit: 10,
-    page: 1,
+    limit: LIMIT,
+    page: filters.offset,
   })
 
   useEffect(() => {
@@ -103,6 +102,12 @@ export const TargettedCampaignTable = () => {
       title="Targetted Campaign"
       subtitle="Setup competitive commission rate for specific Affiliates & products. Increase your chances to be promoted by top Shopee Affiliates."
       className="h-fit"
+      actionables={[
+        {
+          label: "Add campaign",
+          onClick: () => navigate("/a/affiliate/targetted-campaign/create"),
+        },
+      ]}
     >
       <TableContainer
         numberOfRows={DEFAULT_PAGE_SIZE}

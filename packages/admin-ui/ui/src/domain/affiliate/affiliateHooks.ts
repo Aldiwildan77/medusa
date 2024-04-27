@@ -5,12 +5,15 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 import type {
+  GetListAffiliatorPayload,
+  GetListAffiliatorResponses,
   GetTargettedCampaignPayload,
   GetTargettedCampaignResponses,
   ShopCampaign,
   UpdateShopCampaignPayload,
 } from "../../services/affiliate"
 import {
+  getListAffiliator,
   getShopCampaign,
   getTargettedCampaign,
   updateShopCampaign,
@@ -36,6 +39,17 @@ export const useGetTargettedCampaign = (
   return useQuery({
     queryKey: ["targettedCampaign", JSON.stringify(payload)],
     queryFn: async () => getTargettedCampaign(payload),
+    ...options,
+  })
+}
+
+export const useGetAffiliatorList = (
+  payload: GetListAffiliatorPayload,
+  options?: UseQueryOptions<GetListAffiliatorResponses>
+) => {
+  return useQuery({
+    queryKey: ["affiliatorList", JSON.stringify(payload)],
+    queryFn: async () => getListAffiliator(payload),
     ...options,
   })
 }
