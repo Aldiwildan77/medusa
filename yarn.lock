@@ -5801,6 +5801,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/react@npm:^0.26.2":
+  version: 0.26.12
+  resolution: "@floating-ui/react@npm:0.26.12"
+  dependencies:
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/utils": ^0.2.0
+    tabbable: ^6.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: f47e133b9fe5dd404886c4e69e760dc0d6ab30774de82b5547cba83d0cd6e7a3bb4c221587e115a3c0c466ac344578c3db78b5808b5acd70ae5d43d587de9fd1
+  languageName: node
+  linkType: hard
+
 "@floating-ui/utils@npm:^0.2.0, @floating-ui/utils@npm:^0.2.1":
   version: 0.2.1
   resolution: "@floating-ui/utils@npm:0.2.1"
@@ -7906,7 +7920,7 @@ __metadata:
     "@tanstack/react-table": ^8.7.9
     "@types/pluralize": ^0.0.29
     "@types/react": ^18.2.0
-    "@types/react-datepicker": ^4.10.0
+    "@types/react-datepicker": ^6.2.0
     "@types/react-dom": ^18.2.0
     "@types/react-table": ^7.7.9
     autoprefixer: ^10.4.13
@@ -7941,7 +7955,7 @@ __metadata:
     react-collapsible: ^2.8.3
     react-country-flag: ^3.0.2
     react-currency-input-field: ^3.6.8
-    react-datepicker: ^4.8.0
+    react-datepicker: ^6.9.0
     react-dev-utils: ^12.0.1
     react-dnd: ^16.0.1
     react-dnd-html5-backend: ^16.0.1
@@ -18533,15 +18547,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-datepicker@npm:^4.10.0":
-  version: 4.11.2
-  resolution: "@types/react-datepicker@npm:4.11.2"
+"@types/react-datepicker@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "@types/react-datepicker@npm:6.2.0"
   dependencies:
-    "@popperjs/core": ^2.9.2
+    "@floating-ui/react": ^0.26.2
     "@types/react": "*"
-    date-fns: ^2.0.1
-    react-popper: ^2.2.5
-  checksum: b0af7297b4044043008bd483cd601890ec7f62c2052c0cd65b6ce373a11cffb1103ce237ece502b8a9d4ff8e003db230dccb117125055661ee1ab63baeb124f7
+    date-fns: ^3.3.1
+  checksum: 40342f0a5e15bac6f2b35072a2f7041db20b924692123aface78f2cbf0e896c0c02c299a9173583e01e5b6dad38e3da86ad0e56e943e74e0c0dc7d5c60129bdf
   languageName: node
   linkType: hard
 
@@ -25413,7 +25426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3, date-fns@npm:^2.30.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -25426,6 +25439,13 @@ __metadata:
   version: 3.2.0
   resolution: "date-fns@npm:3.2.0"
   checksum: f93e987f785d7f2b7349986d150b014ce21fa6425e2e1edea6f0e01731dceef68deabf0f723689c28604e857648ac708a52b924cb7584e4321835686aa665371
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.3.1":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -44095,6 +44115,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-datepicker@npm:^6.9.0":
+  version: 6.9.0
+  resolution: "react-datepicker@npm:6.9.0"
+  dependencies:
+    "@floating-ui/react": ^0.26.2
+    clsx: ^2.1.0
+    date-fns: ^3.3.1
+    prop-types: ^15.7.2
+    react-onclickoutside: ^6.13.0
+  peerDependencies:
+    react: ^16.9.0 || ^17 || ^18
+    react-dom: ^16.9.0 || ^17 || ^18
+  checksum: aed97871a60071bf00dd1447a7c4a3841a05db6f57bd24b3e499c9ef8c20bc5c46a826b6b0667ae804c4ddd2bb88319bd8115a08bb670c2a57505b0a7a18bec6
+  languageName: node
+  linkType: hard
+
 "react-day-picker@npm:^8.8.0":
   version: 8.8.0
   resolution: "react-day-picker@npm:8.8.0"
@@ -44542,7 +44578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-onclickoutside@npm:^6.12.2":
+"react-onclickoutside@npm:^6.12.2, react-onclickoutside@npm:^6.13.0":
   version: 6.13.0
   resolution: "react-onclickoutside@npm:6.13.0"
   peerDependencies:
@@ -44552,7 +44588,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-popper@npm:^2.2.5, react-popper@npm:^2.3.0":
+"react-popper@npm:^2.3.0":
   version: 2.3.0
   resolution: "react-popper@npm:2.3.0"
   dependencies:
@@ -48817,6 +48853,13 @@ __metadata:
   version: 2.0.17
   resolution: "synchronous-promise@npm:2.0.17"
   checksum: 1babe643d8417789ef6e5a2f3d4b8abcda2de236acd09bbe2c98f6be82c0a2c92ed21a6e4f934845fa8de18b1435a9cba1e8c3d945032e8a532f076224c024b1
+  languageName: node
+  linkType: hard
+
+"tabbable@npm:^6.0.0":
+  version: 6.2.0
+  resolution: "tabbable@npm:6.2.0"
+  checksum: ced8b38f05f2de62cd46836d77c2646c42b8c9713f5bd265daf0e78ff5ac73d3ba48a7ca45f348bafeef29b23da7187c72250742d37627883ef89cbd7fa76898
   languageName: node
   linkType: hard
 

@@ -24,6 +24,8 @@ export function TargettedCampaignCreatePage() {
     console.log(data)
   }
 
+  console.log("errors", errors)
+
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
       <div className="gap-y-xsmall flex h-full grow flex-col">

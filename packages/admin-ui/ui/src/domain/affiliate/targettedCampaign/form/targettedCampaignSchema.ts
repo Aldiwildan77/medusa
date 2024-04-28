@@ -6,8 +6,8 @@ export const targettedCampaignFormSchema = z
     startTime: z.string().min(1, {
       message: "Start time is required",
     }),
-    showEndTime: z.boolean(),
-    endTime: z.string().nullable(),
+    showEndTime: z.boolean().optional(),
+    endTime: z.string().optional(),
     customerIds: z.array(z.string()),
   })
   .refine(

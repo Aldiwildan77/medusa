@@ -1,10 +1,12 @@
 import { useState } from "react"
-import DatePicker from "../../../../components/atoms/date-picker/date-picker"
 import TimePicker from "../../../../components/atoms/date-picker/time-picker"
 import BodyCard from "../../../../components/organisms/body-card"
 import Checkbox from "../../../../components/atoms/checkbox"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import ReactDatePicker from "react-datepicker"
+
+import dayjs from "dayjs"
 
 type Props = {
   errors: Partial<FieldErrors<TargettedCampaignForm>>
@@ -13,7 +15,7 @@ type Props = {
 }
 
 export function BasicInformation(props: Props) {
-  const [showEndTime, setShowEndTime] = useState(false)
+  // const [showEndTime, setShowEndTime] = useState(false)
 
   return (
     <BodyCard
@@ -27,62 +29,64 @@ export function BasicInformation(props: Props) {
         <div className="grid grid-cols-12 items-center gap-2">
           <label
             htmlFor="name"
-            className="col-span-2 mb-2 block text-right text-sm font-medium"
+            className="col-span-2 block text-right text-sm font-medium"
           >
-            Name <span className="ml-1 text-red-500">*</span>
+            Name <span className=" text-[#b91c1c]">*</span>
           </label>
-          <input
-            name="name"
-            type="text"
-            className="col-span-8 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
-            placeholder="Please enter a campaign name"
-            required
-            value={props.values.name}
-          />
-          {props.errors.name && (
-            <span className="col-span-2 text-sm text-red-500">
-              {props.errors.name.message}
-            </span>
-          )}
+          <div className="col-span-8 flex flex-col gap-1">
+            <input
+              name="name"
+              type="text"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+              placeholder="Please enter a campaign name"
+              required
+              value={props.values.name}
+              onChange={(e) => props.setValue("name", e.target.value)}
+            />
+            {props.errors.name && (
+              <span className="col-span-2 text-sm  text-[#b91c1c]">
+                {props.errors.name.message}
+              </span>
+            )}
+          </div>
         </div>
         <div className="grid grid-cols-12 items-center gap-2">
           <label
             htmlFor="startTime"
-            className="col-span-2 mb-2 block text-right text-sm font-medium"
+            className="col-span-2 block text-right text-sm font-medium"
           >
-            Start Time <span className="text-red-70 ml-1">*</span>
+            Start Time <span className=" text-[#b91c1c]">*</span>
           </label>
           <div className="col-span-8 flex flex-row">
             <div className="flex w-full flex-row items-center gap-2">
-              <DatePicker
-                label="Select start date"
-                date={
+              <ReactDatePicker
+                showTimeSelect
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                wrapperClassName="w-full"
+                placeholderText="Please select a start time"
+                value={
                   props.values.startTime
+                    ? dayjs(props.values.startTime).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )
+                    : undefined
+                }
+                minDate={new Date()}
+                selected={
+                  props.values?.startTime
                     ? new Date(props.values.startTime)
                     : null
                 }
-                onSubmitDate={(e) => {
+                onChange={(e) => {
                   if (e) {
                     props.setValue("startTime", e.toISOString())
                   }
                 }}
-              />
-              <TimePicker
-                label="Start time"
-                date={
-                  props.values.startTime
-                    ? new Date(props.values.startTime)
-                    : null
-                }
-                onSubmitDate={(e) => {
-                  if (e) {
-                    props.setValue("startTime", e.toISOString())
-                  }
-                }}
+                required={true}
               />
             </div>
             {props.errors.startTime && (
-              <span className="text-sm text-red-500">
+              <span className="text-sm  text-[#b91c1c]">
                 {props.errors.startTime.message}
               </span>
             )}
@@ -92,52 +96,52 @@ export function BasicInformation(props: Props) {
               label="Set end time"
               name="setEndTime"
               id="setEndTime"
-              onChange={(e) => setShowEndTime(e.target.checked)}
+              onChange={(e) => props.setValue("showEndTime", e.target.checked)}
             />
           </div>
         </div>
-        {showEndTime && (
+        {props.values.showEndTime && (
           <div className="grid grid-cols-12 items-center gap-2">
             <label
               htmlFor="endTime"
-              className="col-span-2 mb-2 block text-right text-sm font-medium"
+              className="col-span-2 block text-right text-sm font-medium"
             >
-              End Time <span className="text-red-70 ml-1">*</span>
+              End Time <span className="text-[#b91c1c]">*</span>
             </label>
             <div className="col-span-8 flex flex-col">
               <div className="flex w-full flex-row items-center gap-2">
-                <DatePicker
-                  label="Select end date"
-                  // date={new Date(props.values?.endTime ?? null)}
-                  date={
+                <ReactDatePicker
+                  showTimeSelect
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  wrapperClassName="w-full"
+                  placeholderText="Please select an end time"
+                  value={
+                    props.values?.endTime
+                      ? dayjs(props.values.endTime).format(
+                          "YYYY-MM-DD HH:mm:ss"
+                        )
+                      : undefined
+                  }
+                  minDate={
+                    props.values?.startTime
+                      ? new Date(props.values.startTime)
+                      : null
+                  }
+                  selected={
                     props.values?.endTime
                       ? new Date(props.values.endTime)
                       : null
                   }
-                  onSubmitDate={(e) => {
+                  onChange={(e) => {
                     if (e) {
                       props.setValue("endTime", e.toISOString())
                     }
                   }}
                   required={true}
                 />
-                <TimePicker
-                  label="End time"
-                  // date={new Date(props.values.endTime ?? null)}
-                  date={
-                    props.values?.endTime
-                      ? new Date(props.values.endTime)
-                      : null
-                  }
-                  onSubmitDate={(e) => {
-                    if (e) {
-                      props.setValue("endTime", e.toISOString())
-                    }
-                  }}
-                />
               </div>
               {props.errors.endTime && (
-                <span className="text-sm text-red-500">
+                <span className="text-sm  text-[#b91c1c]">
                   {props.errors.endTime.message}
                 </span>
               )}
