@@ -7,7 +7,7 @@ import TableSearch from "./table-search"
 import clsx from "clsx"
 import { useNavigate } from "react-router-dom"
 
-type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
+export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
   forceDropdown?: boolean
   actions?: ActionType[]
   linkTo?: string

@@ -7,6 +7,7 @@ import {
   targettedCampaignFormSchema,
 } from "../targettedCampaign/form/targettedCampaignSchema"
 import { Button } from "@medusajs/ui"
+import { AffiliateProductTarget } from "../targettedCampaign/form/AffiliateProductTarget"
 
 export function TargettedCampaignCreatePage() {
   const {
@@ -25,6 +26,7 @@ export function TargettedCampaignCreatePage() {
   }
 
   console.log("errors", errors)
+  console.log("values", values)
 
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
@@ -40,12 +42,12 @@ export function TargettedCampaignCreatePage() {
             setValue={setValue}
             values={values}
           />
-          <Button
-            className="float-right"
-            variant="primary"
-            size="small"
-            type="submit"
-          >
+          <AffiliateProductTarget
+            errors={errors}
+            setValue={setValue}
+            values={values}
+          />
+          <Button className="ml-auto" variant="primary" type="submit">
             Submit
           </Button>
         </div>

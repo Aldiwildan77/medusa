@@ -1,5 +1,3 @@
-import { useState } from "react"
-import TimePicker from "../../../../components/atoms/date-picker/time-picker"
 import BodyCard from "../../../../components/organisms/body-card"
 import Checkbox from "../../../../components/atoms/checkbox"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
@@ -15,8 +13,6 @@ type Props = {
 }
 
 export function BasicInformation(props: Props) {
-  // const [showEndTime, setShowEndTime] = useState(false)
-
   return (
     <BodyCard
       forceDropdown={false}
@@ -31,7 +27,7 @@ export function BasicInformation(props: Props) {
             htmlFor="name"
             className="col-span-2 block text-right text-sm font-medium"
           >
-            Name <span className=" text-[#b91c1c]">*</span>
+            Name <span className=" text-red-600">*</span>
           </label>
           <div className="col-span-8 flex flex-col gap-1">
             <input
@@ -44,7 +40,7 @@ export function BasicInformation(props: Props) {
               onChange={(e) => props.setValue("name", e.target.value)}
             />
             {props.errors.name && (
-              <span className="col-span-2 text-sm  text-[#b91c1c]">
+              <span className="col-span-2 text-sm  text-red-600">
                 {props.errors.name.message}
               </span>
             )}
@@ -55,7 +51,7 @@ export function BasicInformation(props: Props) {
             htmlFor="startTime"
             className="col-span-2 block text-right text-sm font-medium"
           >
-            Start Time <span className=" text-[#b91c1c]">*</span>
+            Start Time <span className=" text-red-600">*</span>
           </label>
           <div className="col-span-8 flex flex-row">
             <div className="flex w-full flex-row items-center gap-2">
@@ -86,7 +82,7 @@ export function BasicInformation(props: Props) {
               />
             </div>
             {props.errors.startTime && (
-              <span className="text-sm  text-[#b91c1c]">
+              <span className="text-sm  text-red-600">
                 {props.errors.startTime.message}
               </span>
             )}
@@ -106,7 +102,7 @@ export function BasicInformation(props: Props) {
               htmlFor="endTime"
               className="col-span-2 block text-right text-sm font-medium"
             >
-              End Time <span className="text-[#b91c1c]">*</span>
+              End Time <span className="text-red-600">*</span>
             </label>
             <div className="col-span-8 flex flex-col">
               <div className="flex w-full flex-row items-center gap-2">
@@ -141,7 +137,7 @@ export function BasicInformation(props: Props) {
                 />
               </div>
               {props.errors.endTime && (
-                <span className="text-sm  text-[#b91c1c]">
+                <span className="text-sm  text-red-600">
                   {props.errors.endTime.message}
                 </span>
               )}

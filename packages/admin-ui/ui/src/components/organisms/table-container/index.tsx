@@ -5,21 +5,29 @@ import { PagingProps } from "./types"
 
 const ROW_HEIGHT = 40
 
-type Props<T extends boolean> = PropsWithChildren<{
-  isLoading?: boolean
-  hasPagination?: T
-  pagingState: T extends true ? PagingProps : undefined
-  numberOfRows?: number
-}>
+type Props = PropsWithChildren<
+  | {
+      isLoading?: boolean
+      hasPagination: false
+      numberOfRows?: number
+      pagingState?: undefined
+    }
+  | {
+      isLoading?: boolean
+      hasPagination?: true
+      pagingState: PagingProps
+      numberOfRows?: number
+    }
+>
 
-const TableContainer = <T extends boolean>({
+const TableContainer = ({
   children,
   // TODO: remove (redundant)
   hasPagination,
   pagingState,
   isLoading,
   numberOfRows = 12,
-}: Props<T>) => {
+}: Props) => {
   // We use the number of rows (query limit) plus the header row to calculate the minimum height of the table, to avoid the table jumping around while loading.
   const minHeight = (numberOfRows + 1) * ROW_HEIGHT
 

@@ -9,6 +9,16 @@ export const targettedCampaignFormSchema = z
     showEndTime: z.boolean().optional(),
     endTime: z.string().optional(),
     customerIds: z.array(z.string()),
+    productTargetType: z.enum(["ALL", "PRODUCT"]),
+    productTargets: z.array(
+      z.object({
+        productId: z.string(),
+        productImage: z.string(),
+        productName: z.string(),
+        commisionRate: z.number().min(1, { message: "Amount is required" }),
+        type: z.enum(["PERCENTAGE"]),
+      })
+    ),
   })
   .refine(
     (data) => {
