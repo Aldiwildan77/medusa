@@ -1,6 +1,8 @@
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import BodyCard from "../../../../components/organisms/body-card"
 import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { AffiliateProductTargetAll } from "./AffiliateProductTargetAll"
+import { AffiliateProductTargetProduct } from "./AffiliateProductTargetProduct"
 
 type Props = {
   errors: Partial<FieldErrors<TargettedCampaignForm>>
@@ -16,8 +18,14 @@ export function AffiliateProductTarget(props: Props) {
       title="Select Products"
       className="h-fit"
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-3">
         <ProductTargetType {...props} />
+        {props.values?.productTargetType === "ALL" && (
+          <AffiliateProductTargetAll {...props} />
+        )}
+        {props.values?.productTargetType === "PRODUCT" && (
+          <AffiliateProductTargetProduct {...props} />
+        )}
       </div>
     </BodyCard>
   )

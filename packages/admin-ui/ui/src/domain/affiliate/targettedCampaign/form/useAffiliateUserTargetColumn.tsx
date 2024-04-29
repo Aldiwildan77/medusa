@@ -20,7 +20,6 @@ export const useTargettedCampaignColumn = (params: Params) => {
               row.original.customer_id
             )
           )
-          console.log("isAllSelected", isAllSelected)
 
           return (
             <input

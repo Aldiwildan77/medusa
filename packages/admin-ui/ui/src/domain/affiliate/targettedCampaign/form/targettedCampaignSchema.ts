@@ -8,17 +8,27 @@ export const targettedCampaignFormSchema = z
     }),
     showEndTime: z.boolean().optional(),
     endTime: z.string().optional(),
-    customerIds: z.array(z.string()),
+    customerIds: z.array(z.string()).min(1, {
+      message: "At least one customer is required",
+    }),
     productTargetType: z.enum(["ALL", "PRODUCT"]),
-    productTargets: z.array(
-      z.object({
-        productId: z.string(),
-        productImage: z.string(),
-        productName: z.string(),
-        commisionRate: z.number().min(1, { message: "Amount is required" }),
-        type: z.enum(["PERCENTAGE"]),
-      })
-    ),
+    productTargetSingleCommissionRate: z.number().min(1, {
+      message: "Commision rate is required",
+    }),
+    // TODO: recheck again this schema
+    productTargets: z
+      .array(
+        z.object({
+          productId: z.string(),
+          productImage: z.string(),
+          productName: z.string(),
+          commisionRate: z
+            .number()
+            .min(1, { message: "Commision rate is required" }),
+          type: z.enum(["PERCENTAGE"]),
+        })
+      )
+      .optional(),
   })
   .refine(
     (data) => {
@@ -30,6 +40,21 @@ export const targettedCampaignFormSchema = z
     {
       message: "End time is required",
       path: ["endTime"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (
+        data.productTargetType === "PRODUCT" &&
+        (!data.productTargets || data.productTargets.length === 0)
+      ) {
+        return false
+      }
+      return true
+    },
+    {
+      message: "At least one product is required",
+      path: ["productTargets"],
     }
   )
 

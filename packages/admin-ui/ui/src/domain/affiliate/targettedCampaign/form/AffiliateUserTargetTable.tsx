@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
 import type { Row } from "react-table"
-import Table, { TableType } from "../../../../components/molecules/table"
+import Table, {
+  TableRowProps as TableRowPropsBase,
+} from "../../../../components/molecules/table"
 import TableContainer from "../../../../components/organisms/table-container"
 import { useTargettedCampaignFilters } from "./useAffiliateUserTargetFilters"
 import { useTargettedCampaignColumn } from "./useAffiliateUserTargetColumn"
 import { useGetAffiliatorList } from "../../affiliateHooks"
-import { AffiliateGroups } from "../../../../types/affiliate"
+import { Affiliator } from "../../../../types/affiliate"
 import BodyCard from "../../../../components/organisms/body-card"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import { TargettedCampaignForm } from "./targettedCampaignSchema"
@@ -189,7 +191,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
           </Table>
         </TableContainer>
         {props.errors.customerIds && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-red-700">
             {props.errors.customerIds.message}
           </p>
         )}
@@ -198,8 +200,8 @@ export const AffiliateUserTargetTable = (props: Props) => {
   )
 }
 
-type TableRowProps = TableType["Row"] & {
-  row: Row<AffiliateGroups>
+type TableRowProps = TableRowPropsBase & {
+  row: Row<Affiliator>
 }
 
 const TableRow = ({ row, ...rest }: TableRowProps) => {

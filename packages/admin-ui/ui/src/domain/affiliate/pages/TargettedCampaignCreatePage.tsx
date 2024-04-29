@@ -22,7 +22,9 @@ export function TargettedCampaignCreatePage() {
   const values = watch()
 
   const handleSubmitForm = (data: TargettedCampaignForm) => {
-    console.log(data)
+    console.log("")
+    console.log("submit", data)
+    console.log("")
   }
 
   console.log("errors", errors)
