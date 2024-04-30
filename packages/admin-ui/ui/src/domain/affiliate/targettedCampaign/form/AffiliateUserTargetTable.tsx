@@ -14,7 +14,7 @@ import BodyCard from "../../../../components/organisms/body-card"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 
-const LIMIT = 2
+const LIMIT = 10
 
 type Props = {
   errors: Partial<FieldErrors<TargettedCampaignFormType>>
@@ -25,7 +25,7 @@ type Props = {
 export const AffiliateUserTargetTable = (props: Props) => {
   const location = useLocation()
   const [selectedAffiliatorCustomerIds, setSelectedAffiliatorCustomerIds] =
-    useState<string[]>([])
+    useState<string[]>(props.values.customerIds || [])
 
   const { paginate, filters } = useTargettedCampaignFilters({
     defaultSearch: location.search,
@@ -37,7 +37,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
   // const [search, setSearch] = useState()
   const [numPages, setNumPages] = useState(0)
 
-  const getTargettedCampaign = useGetAffiliatorList(
+  const getAffiliator = useGetAffiliatorList(
     {
       limit: filters.limit,
       page: filters.page,
@@ -55,7 +55,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
   }, [selectedAffiliatorCustomerIds])
 
   const [columns] = useTargettedCampaignColumn({
-    selectedAffiliatorCustomerIds: selectedAffiliatorCustomerIds,
+    selectedAffiliatorCustomerIds,
     onSelectAffiliator: (checked, customer_id) => {
       if (checked) {
         setSelectedAffiliatorCustomerIds((prev) => [...prev, customer_id])
@@ -76,9 +76,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
         setSelectedAffiliatorCustomerIds((prev) =>
           prev.filter(
             (id) =>
-              !getTargettedCampaign.data?.data
-                .map((d) => d.customer_id)
-                .includes(id)
+              !getAffiliator.data?.data.map((d) => d.customer_id).includes(id)
           )
         )
       }
@@ -100,7 +98,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
   } = useTable(
     {
       columns,
-      data: getTargettedCampaign.data?.data || [],
+      data: getAffiliator.data?.data || [],
       manualPagination: true,
       initialState: {
         pageIndex: 0,
@@ -137,18 +135,18 @@ export const AffiliateUserTargetTable = (props: Props) => {
         <p>
           <span className="text-orange-600">
             {selectedAffiliatorCustomerIds.length}/
-            {getTargettedCampaign.data?.pagination.total}
+            {getAffiliator.data?.pagination.total}
           </span>{" "}
           affiliates selected
         </p>
         <TableContainer
-          numberOfRows={filters.limit}
+          numberOfRows={getAffiliator.data?.data?.length || 0}
           hasPagination
           pagingState={{
             // TODO: fix paging state for label
-            count: getTargettedCampaign.data?.pagination.total || 0,
-            offset: filters.page - 1,
-            pageSize: filters.page - 1 + rows.length,
+            count: getAffiliator.data?.pagination.total || 0,
+            offset: (filters.page - 1) * filters.limit,
+            pageSize: (filters.page - 1) * filters.limit + rows.length,
             title: "Affiliates",
             currentPage: pageIndex + 1,
             pageCount: pageCount,
@@ -157,7 +155,7 @@ export const AffiliateUserTargetTable = (props: Props) => {
             hasNext: canNextPage,
             hasPrev: canPreviousPage,
           }}
-          isLoading={getTargettedCampaign.isFetching}
+          isLoading={getAffiliator.isFetching}
         >
           <Table
             // enableSearch

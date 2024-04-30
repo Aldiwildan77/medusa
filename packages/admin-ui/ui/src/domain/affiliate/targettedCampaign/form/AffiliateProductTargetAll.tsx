@@ -9,7 +9,7 @@ type Props = {
 
 export function AffiliateProductTargetAll(props: Props) {
   return (
-    <div className="flex flex-col gap-2 bg-gray-100 p-4">
+    <div className="rounded-rounded bg-grey-0 border-grey-20 px-xlarge py-large flex flex-col gap-2 border">
       <div className="flex flex-col gap-0">
         <p className="text-sm font-medium">
           Set commission rate for all products
@@ -19,7 +19,7 @@ export function AffiliateProductTargetAll(props: Props) {
         </p>
       </div>
       <div className="grid grid-cols-12 items-center gap-2">
-        <label htmlFor="name" className="col-span-2 block text-sm font-medium">
+        <label htmlFor="name" className="col-span-3 block text-sm font-medium">
           Commission Rate <span className=" text-red-700">*</span>
         </label>
         <div className="col-span-3 flex flex-col gap-1">

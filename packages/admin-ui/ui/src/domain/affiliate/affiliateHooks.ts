@@ -7,8 +7,12 @@ import {
 import type {
   CreateTargettedCampaignPayload,
   CreateTargettedCampaignResponse,
+  EditTargettedCampaignPayload,
+  EditTargettedCampaignResponse,
   GetListAffiliatorPayload,
   GetListAffiliatorResponses,
+  GetSingleTargettedCampaignPayload,
+  GetSingleTargettedCampaignResponses,
   GetTargettedCampaignPayload,
   GetTargettedCampaignResponses,
   ShopCampaign,
@@ -16,8 +20,10 @@ import type {
 } from "../../services/affiliate"
 import {
   createTargettedCampaign,
+  editTargettedCampaign,
   getListAffiliator,
   getShopCampaign,
+  getSingleTargettedCampaign,
   getTargettedCampaign,
   updateShopCampaign,
 } from "../../services/affiliate"
@@ -46,6 +52,17 @@ export const useGetTargettedCampaign = (
   })
 }
 
+export const useGetSingleTargettedCampaign = (
+  payload: GetSingleTargettedCampaignPayload,
+  options?: UseQueryOptions<GetSingleTargettedCampaignResponses>
+) => {
+  return useQuery({
+    queryKey: ["targettedCampaign", JSON.stringify(payload)],
+    queryFn: async () => getSingleTargettedCampaign(payload),
+    ...options,
+  })
+}
+
 export const useGetAffiliatorList = (
   payload: GetListAffiliatorPayload,
   options?: UseQueryOptions<GetListAffiliatorResponses>
@@ -68,4 +85,14 @@ export const useAdminCreateTargettedCampaign = (
     async (payload) => createTargettedCampaign(payload),
     options
   )
+}
+
+export const useAdminEditTargettedCampaign = (
+  options?: UseMutationOptions<
+    EditTargettedCampaignResponse,
+    unknown,
+    EditTargettedCampaignPayload
+  >
+) => {
+  return useMutation(async (payload) => editTargettedCampaign(payload), options)
 }

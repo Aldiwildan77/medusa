@@ -89,6 +89,24 @@ export const getTargettedCampaign = async (
   return res as GetTargettedCampaignResponses
 }
 
+export type GetSingleTargettedCampaignPayload = {
+  serial: string
+}
+
+export type GetSingleTargettedCampaignResponses = {
+  data: AffiliateGroups
+}
+
+export const getSingleTargettedCampaign = async (
+  payload: GetSingleTargettedCampaignPayload
+): Promise<GetSingleTargettedCampaignResponses> => {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/group?serial=${payload.serial}`
+  ).then(async (res) => res.json())
+
+  return res
+}
+
 export type GetListAffiliatorPayload = {
   page: number
   limit: number
@@ -148,6 +166,38 @@ export const createTargettedCampaign = async (
       "Content-Type": "application/json",
     },
   })
+
+  const json = await res.json()
+  // throw error if status code is not 200
+  if (!res.ok) {
+    // throw error from response
+    throw new Error(json)
+  }
+
+  return json
+}
+
+export type EditTargettedCampaignPayload = Omit<AffiliateGroups, "status">
+
+export type EditTargettedCampaignResponse = {
+  data: {
+    serial: string
+  }
+}
+
+export const editTargettedCampaign = async (
+  payload: EditTargettedCampaignPayload
+): Promise<EditTargettedCampaignResponse> => {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/group/${payload.serial}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
 
   const json = await res.json()
   // throw error if status code is not 200

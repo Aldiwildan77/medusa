@@ -11,8 +11,6 @@ import { useGetTargettedCampaign } from "../affiliateHooks"
 import { AffiliateGroups } from "../../../types/affiliate"
 import BodyCard from "../../../components/organisms/body-card"
 
-const DEFAULT_PAGE_SIZE = 15
-
 const defaultQueryProps = {
   fields: "id,title,thumbnail,status,handle,collection_id",
   expand:
@@ -110,7 +108,7 @@ export const TargettedCampaignTable = () => {
       ]}
     >
       <TableContainer
-        numberOfRows={DEFAULT_PAGE_SIZE}
+        numberOfRows={getTargettedCampaign.data?.data.length}
         hasPagination
         pagingState={{
           count: getTargettedCampaign.data?.pagination.total || 0,
@@ -173,7 +171,7 @@ const TableRow = ({ row, ...rest }: TableRowProps) => {
     <Table.Row
       color={"inherit"}
       // TODO: update linkTo
-      linkTo={`/a/products/${data.serial}`}
+      linkTo={`/a/affiliate/targetted-campaign/${data.serial}`}
       actions={[]}
       // actions={getActions()}
       {...rest}

@@ -127,12 +127,7 @@ export const AffiliateProductTargetProductModal = (props: Props) => {
         <Modal.Header handleClose={props.onClose}>
           <h1 className="inter-xlarge-semibold m-0">Select Products</h1>
         </Modal.Header>
-        <BodyCard
-          forceDropdown={false}
-          compact={true}
-          title="Select Affiliates"
-          className="h-fit"
-        >
+        <BodyCard forceDropdown={false} compact={true} className="h-fit">
           <div className="flex flex-col">
             <p>
               <span className="text-orange-600">
@@ -141,13 +136,13 @@ export const AffiliateProductTargetProductModal = (props: Props) => {
               products selected
             </p>
             <TableContainer
-              numberOfRows={filters.limit}
+              numberOfRows={products?.length || 0}
               hasPagination
               pagingState={{
                 // TODO: fix paging state for label
                 count: count || 0,
-                offset: filters.page - 1,
-                pageSize: filters.page - 1 + rows.length,
+                offset: (filters.page - 1) * filters.limit,
+                pageSize: (filters.page - 1) * filters.limit + rows.length,
                 title: "Products",
                 currentPage: pageIndex + 1,
                 pageCount: pageCount,

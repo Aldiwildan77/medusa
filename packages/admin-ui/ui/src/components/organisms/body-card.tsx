@@ -39,6 +39,16 @@ const BodyCard: React.FC<BodyCardProps> = ({
   ...rest
 }) => {
   const { isScrolled, scrollListener } = useScroll({ threshold: 16 })
+
+  const showTableTopDiv =
+    customHeader ||
+    title ||
+    subtitle ||
+    status ||
+    actionables ||
+    customActionable ||
+    forceDropdown
+
   return (
     <div
       className={clsx(
@@ -50,7 +60,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
     >
       <div className="relative">
         {isScrolled && (
-          <div className="rounded-t-rounded from-grey-0 h-xlarge absolute top-0 left-0 right-0 z-10 bg-gradient-to-b to-[rgba(255,255,255,0)]" />
+          <div className="rounded-t-rounded from-grey-0 h-xlarge absolute left-0 right-0 top-0 z-10 bg-gradient-to-b to-[rgba(255,255,255,0)]" />
         )}
       </div>
       <div
@@ -59,40 +69,44 @@ const BodyCard: React.FC<BodyCardProps> = ({
         })}
         onScroll={scrollListener}
       >
-        <div
-          className={clsx("px-xlarge py-large", {
-            "border-grey-20 border-b border-solid": setBorders,
-          })}
-        >
-          <div className="flex items-start justify-between">
-            <div>
-              {customHeader ? (
-                <div>{customHeader}</div>
-              ) : title ? (
-                <h1 className="inter-xlarge-semibold text-grey-90">{title}</h1>
-              ) : (
-                <div />
-              )}
+        {showTableTopDiv && (
+          <div
+            className={clsx("px-xlarge py-large", {
+              "border-grey-20 border-b border-solid": setBorders,
+            })}
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                {customHeader ? (
+                  <div>{customHeader}</div>
+                ) : title ? (
+                  <h1 className="inter-xlarge-semibold text-grey-90">
+                    {title}
+                  </h1>
+                ) : (
+                  <div />
+                )}
 
-              {subtitle && (
-                <h3 className="inter-small-regular text-grey-50 pt-1.5">
-                  {subtitle}
-                </h3>
-              )}
-            </div>
+                {subtitle && (
+                  <h3 className="inter-small-regular text-grey-50 pt-1.5">
+                    {subtitle}
+                  </h3>
+                )}
+              </div>
 
-            <div className="flex items-center space-x-2">
-              {status && status}
-              <Actionables
-                actions={actionables}
-                forceDropdown={forceDropdown}
-                customTrigger={customActionable}
-              />
+              <div className="flex items-center space-x-2">
+                {status && status}
+                <Actionables
+                  actions={actionables}
+                  forceDropdown={forceDropdown}
+                  customTrigger={customActionable}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="px-xlarge">
+        <div className={`px-xlarge ${showTableTopDiv ? "" : "pt-large"}`}>
           {children && (
             <div
               className={clsx("flex flex-col", {

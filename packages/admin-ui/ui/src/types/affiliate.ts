@@ -5,7 +5,7 @@ export type AffiliateGroups = {
   ended_at: string | null
   status: "DRAFT" | "ACTIVE" | "ENDED" | "TERMINATED"
   user_target_type: "ALL" | "SPECIFIC"
-  product_target_type: string
+  product_target_type: "ALL" | "PRODUCT"
   user_targets: string[]
   product_targets?: ProductTarget[]
 }

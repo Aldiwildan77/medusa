@@ -3,8 +3,12 @@ import Checkbox from "../../../../components/atoms/checkbox"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 import ReactDatePicker from "react-datepicker"
-
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type Props = {
   errors: Partial<FieldErrors<TargettedCampaignFormType>>
@@ -92,6 +96,7 @@ export function BasicInformation(props: Props) {
               label="Set end time"
               name="setEndTime"
               id="setEndTime"
+              checked={props.values.showEndTime}
               onChange={(e) => props.setValue("showEndTime", e.target.checked)}
             />
           </div>

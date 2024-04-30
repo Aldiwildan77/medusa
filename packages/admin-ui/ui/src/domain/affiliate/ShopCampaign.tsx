@@ -54,7 +54,7 @@ export function ShopCampaign() {
       compact={true}
       title="Shop Campaign"
       subtitle="Shop Campaign allows you to set universal commission rate for all of your whole shop. Once setup, all of your products will be available for Affiliates to promote on Shopee channels or social media platforms. You only pay commission for successful orders."
-      className="h-fit"
+      className="pb-large !h-fit"
     >
       {getShopCampaignQuery.isLoading ? (
         <div className="flex w-full items-center justify-center">

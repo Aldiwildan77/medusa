@@ -70,7 +70,10 @@ export const AffiliateProductTargetProduct = (props: Props) => {
               Add product
             </Button>
           </div>
-          <TableContainer hasPagination={false}>
+          <TableContainer
+            numberOfRows={props.values?.productTargets?.length || 0}
+            hasPagination={false}
+          >
             <Table {...getTableProps()}>
               <Table.Head>
                 {headerGroups?.map((headerGroup, idx) => (

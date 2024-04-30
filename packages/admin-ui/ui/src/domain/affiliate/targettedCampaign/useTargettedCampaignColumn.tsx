@@ -8,7 +8,7 @@ export const useTargettedCampaignColumn = () => {
   const getProductStatus = (status: AffiliateGroups["status"]) => {
     switch (status) {
       case "DRAFT":
-        return <StatusIndicator title="Draft" variant="default" />
+        return <StatusIndicator title="Upcoming" variant="default" />
       case "ACTIVE":
         return <StatusIndicator title="Active" variant="success" />
       case "ENDED":
