@@ -1,19 +1,19 @@
 import { useMemo } from "react"
 import { Column } from "react-table"
-import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 import { Button } from "@medusajs/ui"
 import { FieldErrors } from "react-hook-form"
 
 type Params = {
-  data: TargettedCampaignForm["productTargets"]
-  errors: Partial<FieldErrors<TargettedCampaignForm>>
+  data: TargettedCampaignFormType["productTargets"]
+  errors: Partial<FieldErrors<TargettedCampaignFormType>>
   onChangeRate: (data: { productId: string; rate: number }) => void
   onDelete: (productId: string) => void
 }
 
 export const useAffiliateProductTargetProductColumn = (params: Params) => {
   const columns: Column<
-    NonNullable<TargettedCampaignForm["productTargets"]>[0]
+    NonNullable<TargettedCampaignFormType["productTargets"]>[0]
   >[] = useMemo(
     // () => [],
     () => [

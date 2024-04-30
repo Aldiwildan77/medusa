@@ -1,13 +1,13 @@
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
 import BodyCard from "../../../../components/organisms/body-card"
-import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 import { AffiliateProductTargetAll } from "./AffiliateProductTargetAll"
 import { AffiliateProductTargetProduct } from "./AffiliateProductTargetProduct"
 
 type Props = {
-  errors: Partial<FieldErrors<TargettedCampaignForm>>
-  setValue: UseFormSetValue<TargettedCampaignForm>
-  values: TargettedCampaignForm
+  errors: Partial<FieldErrors<TargettedCampaignFormType>>
+  setValue: UseFormSetValue<TargettedCampaignFormType>
+  values: TargettedCampaignFormType
 }
 
 export function AffiliateProductTarget(props: Props) {

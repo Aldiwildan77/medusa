@@ -1,17 +1,17 @@
 import { useMemo } from "react"
 import { Column } from "react-table"
 import { PricedProduct, PricedVariant } from "@medusajs/client-types"
-import { TargettedCampaignForm } from "../targettedCampaignSchema"
+import { TargettedCampaignFormType } from "../targettedCampaignSchema"
 
 type Params = {
-  selectedProducts: TargettedCampaignForm["productTargets"]
+  selectedProducts: TargettedCampaignFormType["productTargets"]
   onSelectProduct: (
     checked: boolean,
-    product: NonNullable<TargettedCampaignForm["productTargets"]>[0]
+    product: NonNullable<TargettedCampaignFormType["productTargets"]>[0]
   ) => void
   onSelectAll: (
     checked: boolean,
-    products: NonNullable<TargettedCampaignForm["productTargets"]>
+    products: NonNullable<TargettedCampaignFormType["productTargets"]>
   ) => void
 }
 

@@ -7,7 +7,7 @@ import Table, {
 } from "../../../../../components/molecules/table"
 import TableContainer from "../../../../../components/organisms/table-container"
 import BodyCard from "../../../../../components/organisms/body-card"
-import { TargettedCampaignForm } from "../targettedCampaignSchema"
+import { TargettedCampaignFormType } from "../targettedCampaignSchema"
 import { useAdminProducts } from "medusa-react"
 import { useAffiliateProductTargetProductModalColumn } from "./useAffiliateProductTargetProductModalColumn"
 import { PricedProduct } from "@medusajs/client-types"
@@ -18,15 +18,15 @@ import Modal from "../../../../../components/molecules/modal"
 const LIMIT = 10
 
 type Props = {
-  selectedProducts: NonNullable<TargettedCampaignForm["productTargets"]>
-  onSubmit: (products: TargettedCampaignForm["productTargets"]) => void
+  selectedProducts: NonNullable<TargettedCampaignFormType["productTargets"]>
+  onSubmit: (products: TargettedCampaignFormType["productTargets"]) => void
   onClose: () => void
 }
 
 export const AffiliateProductTargetProductModal = (props: Props) => {
   const location = useLocation()
   const [selectedProducts, setSelectedProducts] = useState<
-    NonNullable<TargettedCampaignForm["productTargets"]>
+    NonNullable<TargettedCampaignFormType["productTargets"]>
   >(props.selectedProducts)
 
   const { paginate, filters } = useAffiliateProductTargetProductModalFilters({

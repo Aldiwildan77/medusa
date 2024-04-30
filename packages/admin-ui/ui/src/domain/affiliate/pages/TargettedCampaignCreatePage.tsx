@@ -1,27 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { BasicInformation } from "../targettedCampaign/form/BasicInformation"
-import { AffiliateUserTargetTable } from "../targettedCampaign/form/AffiliateUserTargetTable"
-import {
-  TargettedCampaignForm,
-  targettedCampaignFormSchema,
-} from "../targettedCampaign/form/targettedCampaignSchema"
-import { Button } from "@medusajs/ui"
-import { AffiliateProductTarget } from "../targettedCampaign/form/AffiliateProductTarget"
+import { TargettedCampaignFormType } from "../targettedCampaign/form/targettedCampaignSchema"
 import { useAdminCreateTargettedCampaign } from "../affiliateHooks"
 import { useNavigate } from "react-router-dom"
+import { TargettedCampaignForm } from "../targettedCampaign/TargettedCampaignForm"
 
 export function TargettedCampaignCreatePage() {
   const navigate = useNavigate()
-  const {
-    setValue,
-    formState: { errors },
-    watch,
-    handleSubmit,
-  } = useForm<TargettedCampaignForm>({
-    resolver: zodResolver(targettedCampaignFormSchema),
-    mode: "onChange",
-  })
 
   const createCampaignMachine = useAdminCreateTargettedCampaign({
     onSuccess: (data) => {
@@ -29,9 +12,7 @@ export function TargettedCampaignCreatePage() {
     },
   })
 
-  const values = watch()
-
-  const handleSubmitForm = (data: TargettedCampaignForm) => {
+  const handleSubmit = (data: TargettedCampaignFormType) => {
     createCampaignMachine.mutate({
       name: data.name,
       started_at: data.startTime,
@@ -57,34 +38,9 @@ export function TargettedCampaignCreatePage() {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleSubmitForm)}>
-      <div className="gap-y-xsmall flex h-full grow flex-col">
-        <div className="flex flex-col gap-4">
-          <BasicInformation
-            errors={errors}
-            setValue={setValue}
-            values={values}
-          />
-          <AffiliateUserTargetTable
-            errors={errors}
-            setValue={setValue}
-            values={values}
-          />
-          <AffiliateProductTarget
-            errors={errors}
-            setValue={setValue}
-            values={values}
-          />
-          <Button
-            className="ml-auto"
-            variant="primary"
-            type="submit"
-            isLoading={createCampaignMachine.isLoading}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
-    </form>
+    <TargettedCampaignForm
+      onSubmit={handleSubmit}
+      isLoadingSubmit={createCampaignMachine.isLoading}
+    />
   )
 }

@@ -6,15 +6,15 @@ import Table, {
 import TableContainer from "../../../../components/organisms/table-container"
 import BodyCard from "../../../../components/organisms/body-card"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
-import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 import { useAffiliateProductTargetProductColumn } from "./useAffiliateProductTargetProductColumn"
 import { Button, useToggleState } from "@medusajs/ui"
 import { AffiliateProductTargetProductModal } from "./affiliateProductTargetProductModal/AffiliateProductTargetProductModal"
 
 type Props = {
-  errors: Partial<FieldErrors<TargettedCampaignForm>>
-  setValue: UseFormSetValue<TargettedCampaignForm>
-  values: TargettedCampaignForm
+  errors: Partial<FieldErrors<TargettedCampaignFormType>>
+  setValue: UseFormSetValue<TargettedCampaignFormType>
+  values: TargettedCampaignFormType
 }
 
 export const AffiliateProductTargetProduct = (props: Props) => {
@@ -117,7 +117,7 @@ export const AffiliateProductTargetProduct = (props: Props) => {
 }
 
 type TableRowProps = TableRowPropsBase & {
-  row: Row<TargettedCampaignForm["productTargets"][0]>
+  row: Row<TargettedCampaignFormType["productTargets"][0]>
 }
 
 const TableRow = ({ row, ...rest }: TableRowProps) => {

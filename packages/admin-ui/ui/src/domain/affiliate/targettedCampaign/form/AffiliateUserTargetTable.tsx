@@ -12,14 +12,14 @@ import { useGetAffiliatorList } from "../../affiliateHooks"
 import { Affiliator } from "../../../../types/affiliate"
 import BodyCard from "../../../../components/organisms/body-card"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
-import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 
 const LIMIT = 2
 
 type Props = {
-  errors: Partial<FieldErrors<TargettedCampaignForm>>
-  setValue: UseFormSetValue<TargettedCampaignForm>
-  values: TargettedCampaignForm
+  errors: Partial<FieldErrors<TargettedCampaignFormType>>
+  setValue: UseFormSetValue<TargettedCampaignFormType>
+  values: TargettedCampaignFormType
 }
 
 export const AffiliateUserTargetTable = (props: Props) => {

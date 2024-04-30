@@ -72,4 +72,6 @@ export const targettedCampaignFormSchema = z
     }
   )
 
-export type TargettedCampaignForm = z.infer<typeof targettedCampaignFormSchema>
+export type TargettedCampaignFormType = z.infer<
+  typeof targettedCampaignFormSchema
+>

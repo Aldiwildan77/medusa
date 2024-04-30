@@ -1,15 +1,15 @@
 import BodyCard from "../../../../components/organisms/body-card"
 import Checkbox from "../../../../components/atoms/checkbox"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
-import { TargettedCampaignForm } from "./targettedCampaignSchema"
+import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 import ReactDatePicker from "react-datepicker"
 
 import dayjs from "dayjs"
 
 type Props = {
-  errors: Partial<FieldErrors<TargettedCampaignForm>>
-  setValue: UseFormSetValue<TargettedCampaignForm>
-  values: TargettedCampaignForm
+  errors: Partial<FieldErrors<TargettedCampaignFormType>>
+  setValue: UseFormSetValue<TargettedCampaignFormType>
+  values: TargettedCampaignFormType
 }
 
 export function BasicInformation(props: Props) {
