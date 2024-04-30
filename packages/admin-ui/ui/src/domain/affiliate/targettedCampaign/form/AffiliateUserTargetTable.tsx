@@ -147,8 +147,8 @@ export const AffiliateUserTargetTable = (props: Props) => {
           pagingState={{
             // TODO: fix paging state for label
             count: getTargettedCampaign.data?.pagination.total || 0,
-            offset: filters.limit,
-            pageSize: filters.limit + rows.length,
+            offset: filters.page - 1,
+            pageSize: filters.page - 1 + rows.length,
             title: "Affiliates",
             currentPage: pageIndex + 1,
             pageCount: pageCount,

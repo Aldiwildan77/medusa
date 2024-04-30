@@ -4,15 +4,14 @@ import { PricedProduct, PricedVariant } from "@medusajs/client-types"
 import { TargettedCampaignForm } from "../targettedCampaignSchema"
 
 type Params = {
-  // selectedProductIds: string[]
   selectedProducts: TargettedCampaignForm["productTargets"]
   onSelectProduct: (
     checked: boolean,
-    product: TargettedCampaignForm["productTargets"][0]
+    product: NonNullable<TargettedCampaignForm["productTargets"]>[0]
   ) => void
   onSelectAll: (
     checked: boolean,
-    products: TargettedCampaignForm["productTargets"]
+    products: NonNullable<TargettedCampaignForm["productTargets"]>
   ) => void
 }
 

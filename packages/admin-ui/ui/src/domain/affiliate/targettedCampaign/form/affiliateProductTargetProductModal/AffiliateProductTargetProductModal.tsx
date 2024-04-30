@@ -18,7 +18,7 @@ import Modal from "../../../../../components/molecules/modal"
 const LIMIT = 10
 
 type Props = {
-  selectedProducts: TargettedCampaignForm["productTargets"]
+  selectedProducts: NonNullable<TargettedCampaignForm["productTargets"]>
   onSubmit: (products: TargettedCampaignForm["productTargets"]) => void
   onClose: () => void
 }
@@ -26,7 +26,7 @@ type Props = {
 export const AffiliateProductTargetProductModal = (props: Props) => {
   const location = useLocation()
   const [selectedProducts, setSelectedProducts] = useState<
-    TargettedCampaignForm["productTargets"]
+    NonNullable<TargettedCampaignForm["productTargets"]>
   >(props.selectedProducts)
 
   const { paginate, filters } = useAffiliateProductTargetProductModalFilters({
