@@ -19,7 +19,7 @@ export const getShopCampaign = async (): Promise<ShopCampaign> => {
   ).then(async (res) => res.json())
 
   const data = res.data[0] as AffiliateGroups
-  const shopCampaign = data.product_targets.find((t) => t.reference === "ALL")
+  const shopCampaign = data.product_targets?.find((t) => t.reference === "ALL")
 
   return {
     serial: data.serial,
@@ -125,4 +125,36 @@ export const getListAffiliator = async (
   const res = await fetch(url.toString()).then(async (res) => res.json())
 
   return res as GetListAffiliatorResponses
+}
+
+export type CreateTargettedCampaignPayload = Omit<
+  AffiliateGroups,
+  "serial" | "status"
+>
+
+export type CreateTargettedCampaignResponse = {
+  data: {
+    serial: string
+  }
+}
+
+export const createTargettedCampaign = async (
+  payload: CreateTargettedCampaignPayload
+): Promise<CreateTargettedCampaignResponse> => {
+  const res = await fetch(`${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/group`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  const json = await res.json()
+  // throw error if status code is not 200
+  if (!res.ok) {
+    // throw error from response
+    throw new Error(json)
+  }
+
+  return json
 }

@@ -1,19 +1,19 @@
 export type AffiliateGroups = {
   serial: string
   name: string
-  started_at: Date
-  ended_at: Date | null
+  started_at: string
+  ended_at: string | null
   status: "DRAFT" | "ACTIVE" | "ENDED" | "TERMINATED"
-  user_target_type: string
+  user_target_type: "ALL" | "SPECIFIC"
   product_target_type: string
   user_targets: string[]
-  product_targets: ProductTarget[]
+  product_targets?: ProductTarget[]
 }
 
 export type ProductTarget = {
   reference: string
   amount: number
-  type: string
+  type: "PERCENTAGE"
 }
 
 export type AffiliatePagination = {

@@ -23,6 +23,7 @@ export const AffiliateProductTargetProduct = (props: Props) => {
 
   const [columns] = useAffiliateProductTargetProductColumn({
     data: props.values?.productTargets,
+    errors: props.errors,
     onChangeRate: (data) => {
       const newData =
         props.values?.productTargets?.map((product) => {
@@ -54,6 +55,11 @@ export const AffiliateProductTargetProduct = (props: Props) => {
     <>
       <BodyCard forceDropdown={false} compact={true} className="h-fit">
         <div className="flex flex-col">
+          {props.errors.productTargets && (
+            <span className="col-span-2 text-sm  text-red-700">
+              {props.errors.productTargets.message}
+            </span>
+          )}
           <div className="flex flex-row items-center justify-between">
             <p>{props.values.productTargets?.length || "0"} product(s)</p>
             <Button

@@ -2,7 +2,7 @@ import { useState } from "react"
 import EditIcon from "../../components/fundamentals/icons/edit-icon"
 import BodyCard from "../../components/organisms/body-card"
 import {
-  useAdminUpdateAnalyticsConfig,
+  useAdminUpdateShopCampaign,
   useGetShopCampaign,
 } from "./affiliateHooks"
 import Spinner from "../../components/atoms/spinner"
@@ -19,7 +19,7 @@ export function ShopCampaign() {
       setRate(data.commissionRate)
     },
   })
-  const updateShopCampaignMutation = useAdminUpdateAnalyticsConfig({
+  const updateShopCampaignMutation = useAdminUpdateShopCampaign({
     onError: (err) => {
       const error = err as Error
       const message = JSON.parse(error.message) as unknown as { error: string }

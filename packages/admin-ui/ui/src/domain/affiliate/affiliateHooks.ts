@@ -5,6 +5,8 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 import type {
+  CreateTargettedCampaignPayload,
+  CreateTargettedCampaignResponse,
   GetListAffiliatorPayload,
   GetListAffiliatorResponses,
   GetTargettedCampaignPayload,
@@ -13,6 +15,7 @@ import type {
   UpdateShopCampaignPayload,
 } from "../../services/affiliate"
 import {
+  createTargettedCampaign,
   getListAffiliator,
   getShopCampaign,
   getTargettedCampaign,
@@ -26,7 +29,7 @@ export const useGetShopCampaign = (options?: UseQueryOptions<ShopCampaign>) => {
   })
 }
 
-export const useAdminUpdateAnalyticsConfig = (
+export const useAdminUpdateShopCampaign = (
   options?: UseMutationOptions<null, unknown, UpdateShopCampaignPayload>
 ) => {
   return useMutation(async (payload) => updateShopCampaign(payload), options)
@@ -52,4 +55,17 @@ export const useGetAffiliatorList = (
     queryFn: async () => getListAffiliator(payload),
     ...options,
   })
+}
+
+export const useAdminCreateTargettedCampaign = (
+  options?: UseMutationOptions<
+    CreateTargettedCampaignResponse,
+    unknown,
+    CreateTargettedCampaignPayload
+  >
+) => {
+  return useMutation(
+    async (payload) => createTargettedCampaign(payload),
+    options
+  )
 }
