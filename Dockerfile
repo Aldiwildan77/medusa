@@ -12,12 +12,12 @@ RUN yarn
 # Build all packages
 RUN yarn build
 
-# Inject environment variables
-ARG MEDUSA_ADMIN_BACKEND_URL
-ENV MEDUSA_ADMIN_BACKEND_URL=${MEDUSA_ADMIN_BACKEND_URL}
+# Get values from build-args (https://docs.docker.com/reference/cli/docker/buildx/build/#build-arg)
+# the value that is set here is used as the default value
+ARG MEDUSA_ADMIN_BACKEND_URL="http://localhost:9000"
 
 # Build the admin package for medusa
-RUN yarn --cwd packages/admin build:admin
+RUN yarn --cwd packages/admin build:admin --backend ${MEDUSA_ADMIN_BACKEND_URL}
 
 # ------------------------------------------------------------------------
 FROM nginx:1.19.0
