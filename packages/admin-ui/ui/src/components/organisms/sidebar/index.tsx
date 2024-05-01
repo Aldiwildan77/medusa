@@ -9,6 +9,8 @@ import CartIcon from "../../fundamentals/icons/cart-icon"
 // import CashIcon from "../../fundamentals/icons/cash-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
 // import GiftIcon from "../../fundamentals/icons/gift-icon"
+import { UserGroup } from "@medusajs/icons"
+import CashIcon from "../../fundamentals/icons/cash-icon"
 import ReorderIcon from "../../fundamentals/icons/reorder-icon"
 import SaleIcon from "../../fundamentals/icons/sale-icon"
 import SquaresPlus from "../../fundamentals/icons/squares-plus"
@@ -17,7 +19,6 @@ import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
-import { UserGroup } from "@medusajs/icons"
 
 const ICON_SIZE = 20
 
@@ -119,13 +120,13 @@ const Sidebar: React.FC = () => {
             icon={<GiftIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-gift-cards", "Gift Cards")}
-          />
+          /> */}
           <SidebarMenuItem
             pageLink={"/a/pricing"}
             icon={<CashIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-pricing", "Pricing")}
-          /> */}
+          />
           {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
 
