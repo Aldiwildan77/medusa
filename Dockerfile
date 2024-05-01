@@ -35,3 +35,5 @@ EXPOSE 80
 
 # Serve the app
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+LABEL org.opencontainers.image.source="https://github.com/Aldiwildan77/kilap-ecommerce-admin-ui"
