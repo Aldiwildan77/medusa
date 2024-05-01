@@ -12,6 +12,10 @@ RUN yarn
 # Build all packages
 RUN yarn build
 
+# Inject environment variables
+ARG MEDUSA_ADMIN_BACKEND_URL
+ENV MEDUSA_ADMIN_BACKEND_URL=${MEDUSA_ADMIN_BACKEND_URL}
+
 # Build the admin package for medusa
 RUN yarn --cwd packages/admin build:admin
 
