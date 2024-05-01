@@ -58,6 +58,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            MEDUSA_ADMIN_BACKEND_URL=${{ vars.MEDUSA_ADMIN_BACKEND_URL }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_VERSION }}
