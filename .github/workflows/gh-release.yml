@@ -54,10 +54,10 @@ jobs:
 
       - name: Check and replace variable
         run: |
-          if [ -z "${{ env.MEDUSA_ADMIN_BACKEND_URL }}" ]; then
+          if [ -n "${{ github.event.inputs.medusa_backend_url }}" ]; then
             echo "MEDUSA_ADMIN_BACKEND_URL=${{ github.event.inputs.medusa_backend_url }}" >> $GITHUB_ENV
           fi
-          if [ -z "${{ env.HOST }}" ]; then
+          if [ -n "${{ github.event.inputs.host }}" ]; then
             echo "HOST=${{ github.event.inputs.host }}" >> $GITHUB_ENV
           fi
 
