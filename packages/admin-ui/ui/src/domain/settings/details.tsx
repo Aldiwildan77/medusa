@@ -10,6 +10,7 @@ import useNotification from "../../hooks/use-notification"
 import { getErrorMessage } from "../../utils/error-messages"
 import { NextSelect } from "../../components/molecules/select/next-select"
 import { Option } from "../../types/shared"
+import cities from "./rajaongkirCities.json"
 
 type AccountDetailsFormData = {
   name: string
@@ -17,6 +18,7 @@ type AccountDetailsFormData = {
   payment_link_template: string | undefined
   invite_link_template: string | undefined
   rajaongkir_courier: Option[] | undefined
+  rajaongkir_origin_city_id: Option | undefined
 }
 
 const courierListString =
@@ -27,6 +29,10 @@ const COURIER_OPTIONS: Option[] = courierListString
     label: courier.toUpperCase(),
     value: courier,
   }))
+const CITY_OPTIONS: Option[] = cities.map((city) => ({
+  label: `${city.type} ${city.city_name}`,
+  value: city.city_id,
+}))
 
 const AccountDetails = () => {
   const { register, reset, handleSubmit, control } =
@@ -50,7 +56,7 @@ const AccountDetails = () => {
     const validateSwapLinkTemplate = validateUrl(data.swap_link_template)
     const validatePaymentLinkTemplate = validateUrl(data.payment_link_template)
     const validateInviteLinkTemplate = validateUrl(data.invite_link_template)
-    const { rajaongkir_courier, ...others } = data
+    const { rajaongkir_courier, rajaongkir_origin_city_id, ...others } = data
     if (!validateSwapLinkTemplate) {
       notification(
         t("settings-error", "Error"),
@@ -82,6 +88,7 @@ const AccountDetails = () => {
       ...others,
       metadata: {
         rajaongkir_courier: rajaongkir_courier?.map((c) => c.value).join(","),
+        rajaongkir_origin_city_id: rajaongkir_origin_city_id?.value,
       },
     }
 
@@ -163,6 +170,24 @@ const AccountDetails = () => {
                   }}
                 />
               </div>
+              <div className="mt-base">
+                <Controller
+                  name="rajaongkir_origin_city_id"
+                  control={control}
+                  render={({ field: { value, onChange } }) => {
+                    return (
+                      <NextSelect
+                        label="Origin city of delivery"
+                        onChange={onChange}
+                        options={CITY_OPTIONS}
+                        value={value}
+                        placeholder="Choose city..."
+                        isClearable
+                      />
+                    )
+                  }}
+                />
+              </div>
             </div>
             <div>
               <h2 className="inter-base-semibold mb-base">
@@ -215,14 +240,18 @@ const validateUrl = (address: string | undefined) => {
 const mapStoreDetails = (store: Store): AccountDetailsFormData => {
   return {
     name: store.name,
-    swap_link_template: store.swap_link_template,
-    payment_link_template: store.payment_link_template,
-    invite_link_template: store.invite_link_template,
+    swap_link_template: store.swap_link_template || "",
+    payment_link_template: store.payment_link_template || "",
+    invite_link_template: store.invite_link_template || "",
     rajaongkir_courier:
-      store.metadata?.rajaongkir_courier?.split(",").map((c) => ({
+      (store.metadata?.rajaongkir_courier as string)?.split(",").map((c) => ({
         label: c.toUpperCase(),
         value: c,
       })) || [],
+    rajaongkir_origin_city_id:
+      CITY_OPTIONS?.find(
+        (c) => c.value === store.metadata?.rajaongkir_origin_city_id
+      ) || undefined,
   }
 }
 
