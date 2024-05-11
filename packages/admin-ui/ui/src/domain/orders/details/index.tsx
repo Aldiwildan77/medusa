@@ -3,6 +3,7 @@ import {
   ClaimOrder,
   Fulfillment,
   LineItem,
+  Order,
   Swap,
 } from "@medusajs/medusa"
 import {
@@ -46,7 +47,9 @@ import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-d
 import MailIcon from "../../../components/fundamentals/icons/mail-icon"
 // import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
 // import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import { ActionType } from "../../../components/molecules/actionables"
+import Actionables, {
+  ActionType,
+} from "../../../components/molecules/actionables"
 // import JSONView from "../../../components/molecules/json-view"
 import { Button } from "@medusajs/ui"
 import JSONView from "../../../components/molecules/json-view"
@@ -72,6 +75,7 @@ import SummaryCard from "./detail-cards/summary"
 import EmailModal from "./email-modal"
 import MarkShippedModal from "./mark-shipped"
 import CreateRefundModal from "./refund"
+import PackageIcon from "../../../components/fundamentals/icons/package-icon"
 
 type OrderDetailFulfillment = {
   title: string
@@ -81,7 +85,7 @@ type OrderDetailFulfillment = {
   claim?: ClaimOrder
 }
 
-const gatherAllFulfillments = (order) => {
+const gatherAllFulfillments = (order?: Order) => {
   if (!order) {
     return []
   }
@@ -149,7 +153,7 @@ const OrderDetails = () => {
 
   const [showFulfillment, setShowFulfillment] = useState(false)
   const [showRefund, setShowRefund] = useState(false)
-  const [fullfilmentToShip, setFullfilmentToShip] = useState(null)
+  const [showFulfillmentShipment, setShowFulfillmentShipment] = useState(false)
 
   const { order, isLoading } = useAdminOrder(id!)
 
@@ -258,7 +262,13 @@ const OrderDetails = () => {
     {
       label: t("details-go-to-customer", "Go to Customer"),
       icon: <DetailsIcon size={"20"} />,
-      onClick: () => navigate(`/a/customers/${order?.customer.id}`),
+      onClick: () =>
+        window.open(
+          `/a/customers/${order?.customer.id}`,
+          "_blank",
+          "rel=noopener noreferrer"
+        ),
+      // onClick: () => navigate(`/a/customers/${order?.customer.id}`),
     },
     // {
     //   label: t("details-transfer-ownership", "Transfer ownership"),
@@ -291,17 +301,17 @@ const OrderDetails = () => {
   //   },
   // })
 
-  if (order?.email) {
-    customerActionables.push({
-      label: t("details-edit-email-address", "Edit Email Address"),
-      icon: <MailIcon size={"20"} />,
-      onClick: () => {
-        setEmailModal({
-          email: order?.email,
-        })
-      },
-    })
-  }
+  // if (order?.email) {
+  //   customerActionables.push({
+  //     label: t("details-edit-email-address", "Edit Email Address"),
+  //     icon: <MailIcon size={"20"} />,
+  //     onClick: () => {
+  //       setEmailModal({
+  //         email: order?.email,
+  //       })
+  //     },
+  //   })
+  // }
 
   if (!order && isLoading) {
     return (
@@ -315,9 +325,18 @@ const OrderDetails = () => {
     navigate("/404")
   }
 
-  const anyItemsToFulfil = order.items.some(
+  const anyItemsToFulfil = order?.items.some(
     (item: LineItem) => item.quantity > (item.fulfilled_quantity ?? 0)
   )
+
+  console.log("order", order)
+
+  const shippingData = order?.shipping_methods?.[0]?.data
+  const shippingName = `${String(
+    shippingData?.code || ""
+  ).toUpperCase()} ${String(shippingData?.service || "")} (${String(
+    shippingData?.description || ""
+  )})`
 
   return (
     <div>
@@ -375,7 +394,7 @@ const OrderDetails = () => {
                     ]
                   }
                 >
-                  <div className="mt-6 flex space-x-6 divide-x">
+                  <div className="mt-6 grid grid-cols-2 gap-x-10 gap-y-6">
                     <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-email", "Email")}
@@ -388,13 +407,13 @@ const OrderDetails = () => {
                         <ClipboardCopyIcon size={12} />
                       </button>
                     </div>
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-phone", "Phone")}
                       </div>
                       <div>{order.shipping_address?.phone || "N/A"}</div>
                     </div>
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-payment", "Payment")}
                       </div>
@@ -404,7 +423,7 @@ const OrderDetails = () => {
                           .join(", ")}
                       </div>
                     </div>
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         Affiliate Code
                       </div>
@@ -486,26 +505,13 @@ const OrderDetails = () => {
                     </div>
                   </div>
                 </BodyCard>
-                {/* TODO: uncomment this to show fulfillment card */}
                 <BodyCard
                   className={"h-auto min-h-0 w-full"}
-                  title={t("details-fulfillment", "Fulfillment")}
+                  title={"Shipment"}
                   status={
                     <FulfillmentStatusComponent
                       status={order.fulfillment_status}
                     />
-                  }
-                  customActionable={
-                    order.status !== "canceled" &&
-                    anyItemsToFulfil && (
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        onClick={() => setShowFulfillment(true)}
-                      >
-                        {t("details-create-fulfillment", "Create Fulfillment")}
-                      </Button>
-                    )
                   }
                 >
                   <div className="mt-6">
@@ -515,7 +521,7 @@ const OrderDetails = () => {
                           {t("details-shipping-method", "Shipping Method")}
                         </span>
                         <span className="inter-small-regular text-grey-90 mt-2">
-                          {method?.shipping_option?.name || ""}
+                          {shippingName}
                         </span>
                         <div className="mt-4 flex w-full flex-grow items-center">
                           <JSONView data={method?.data} />
@@ -523,12 +529,26 @@ const OrderDetails = () => {
                       </div>
                     ))}
                     <div className="inter-small-regular mt-6 ">
+                      {order.fulfillments.length === 0 && (
+                        <div className="flex w-full justify-end">
+                          <Actionables
+                            actions={[
+                              {
+                                label: t(
+                                  "templates-mark-shipped",
+                                  "Mark Shipped"
+                                ),
+                                icon: <PackageIcon size={"20"} />,
+                                onClick: () => setShowFulfillmentShipment(true),
+                              },
+                            ]}
+                          />
+                        </div>
+                      )}
                       {allFulfillments.map((fulfillmentObj, i) => (
                         <FormattedFulfillment
                           key={i}
-                          order={order}
                           fulfillmentObj={fulfillmentObj}
-                          setFullfilmentToShip={setFullfilmentToShip}
                         />
                       ))}
                     </div>
@@ -642,11 +662,11 @@ const OrderDetails = () => {
                 onDismiss={toggleTransferOrderModal}
               />
             )}
-            {fullfilmentToShip && (
+            {showFulfillmentShipment && (
               <MarkShippedModal
-                handleCancel={() => setFullfilmentToShip(null)}
-                fulfillment={fullfilmentToShip}
+                handleClose={() => setShowFulfillmentShipment(false)}
                 orderId={order.id}
+                orderToFulfill={order}
               />
             )}
             <OrderEditContext.Consumer>

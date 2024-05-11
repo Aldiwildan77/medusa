@@ -95,11 +95,6 @@ const useOrderTableColums = () => {
         Cell: ({ cell: { value } }) => decideStatus(value),
       },
       {
-        Header: t("order-table-sales-channel", "Sales Channel"),
-        accessor: "sales_channel",
-        Cell: ({ cell: { value } }) => value?.name ?? "N/A",
-      },
-      {
         Header: () => (
           <div className="text-right">{t("order-table-total", "Total")}</div>
         ),

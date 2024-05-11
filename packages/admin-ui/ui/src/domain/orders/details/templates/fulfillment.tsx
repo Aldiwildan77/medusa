@@ -1,132 +1,29 @@
-import { capitalize } from "lodash"
-import {
-  useAdminCancelClaimFulfillment,
-  useAdminCancelFulfillment,
-  useAdminCancelSwapFulfillment,
-} from "medusa-react"
 import { useTranslation } from "react-i18next"
 import IconBadge from "../../../../components/fundamentals/icon-badge"
 import BuildingsIcon from "../../../../components/fundamentals/icons/buildings-icon"
-import PackageIcon from "../../../../components/fundamentals/icons/package-icon"
-import Actionables from "../../../../components/molecules/actionables"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../hooks/use-notification"
 import useStockLocations from "../../../../hooks/use-stock-locations"
-import { getErrorMessage } from "../../../../utils/error-messages"
 import { TrackingLink } from "./tracking-link"
+import { ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa"
 
-export const FormattedFulfillment = ({
-  setFullfilmentToShip,
-  order,
-  fulfillmentObj,
-}) => {
-  const dialog = useImperativeDialog()
-  const notification = useNotification()
+type Props = {
+  fulfillmentObj: OrderDetailFulfillment
+}
+
+type OrderDetailFulfillment = {
+  title: string
+  type: string
+  fulfillment: Fulfillment
+  swap?: Swap
+  claim?: ClaimOrder
+}
+
+export const FormattedFulfillment = ({ fulfillmentObj }: Props) => {
   const { t } = useTranslation()
 
-  const cancelFulfillment = useAdminCancelFulfillment(order.id)
-  const cancelSwapFulfillment = useAdminCancelSwapFulfillment(order.id)
-  const cancelClaimFulfillment = useAdminCancelClaimFulfillment(order.id)
   const { getLocationNameById } = useStockLocations()
 
   const { fulfillment } = fulfillmentObj
   const hasLinks = !!fulfillment.tracking_links?.length
-
-  const getData = () => {
-    switch (true) {
-      case !!fulfillment?.claim_order_id:
-        return {
-          resourceId: fulfillment.claim_order_id,
-          resourceType: "claim",
-        }
-      case !!fulfillment?.swap_id:
-        return {
-          resourceId: fulfillment.swap_id,
-          resourceType: "swap",
-        }
-      default:
-        return { resourceId: order?.id, resourceType: "order" }
-    }
-  }
-
-  const handleCancelFulfillment = async () => {
-    const { resourceId, resourceType } = getData()
-
-    const shouldCancel = await dialog({
-      heading: t("templates-cancel-fulfillment-heading", "Cancel fulfillment?"),
-      text: t(
-        "templates-are-you-sure-you-want-to-cancel-the-fulfillment",
-        "Are you sure you want to cancel the fulfillment?"
-      ),
-    })
-
-    if (!shouldCancel) {
-      return
-    }
-
-    switch (resourceType) {
-      case "swap":
-        return cancelSwapFulfillment.mutate(
-          { swap_id: resourceId, fulfillment_id: fulfillment.id },
-          {
-            onSuccess: () =>
-              notification(
-                t("templates-success", "Success"),
-                t(
-                  "templates-successfully-canceled-swap",
-                  "Successfully canceled swap"
-                ),
-                "success"
-              ),
-            onError: (err) =>
-              notification(
-                t("templates-error", "Error"),
-                getErrorMessage(err),
-                "error"
-              ),
-          }
-        )
-      case "claim":
-        return cancelClaimFulfillment.mutate(
-          { claim_id: resourceId, fulfillment_id: fulfillment.id },
-          {
-            onSuccess: () =>
-              notification(
-                t("templates-success", "Success"),
-                t(
-                  "templates-successfully-canceled-claim",
-                  "Successfully canceled claim"
-                ),
-                "success"
-              ),
-            onError: (err) =>
-              notification(
-                t("templates-error", "Error"),
-                getErrorMessage(err),
-                "error"
-              ),
-          }
-        )
-      default:
-        return cancelFulfillment.mutate(fulfillment.id, {
-          onSuccess: () =>
-            notification(
-              t("templates-success", "Success"),
-              t(
-                "templates-successfully-canceled-fulfillment",
-                "Successfully canceled fulfillment"
-              ),
-              "success"
-            ),
-          onError: (err) =>
-            notification(
-              t("templates-error", "Error"),
-              getErrorMessage(err),
-              "error"
-            ),
-        })
-    }
-  }
 
   return (
     <div className="flex w-full justify-between">
@@ -137,14 +34,7 @@ export const FormattedFulfillment = ({
                 "templates-fulfillment-has-been-canceled",
                 "Fulfillment has been canceled"
               )
-            : t(
-                "templates-fulfilled-by-provider",
-                "{{title}} Fulfilled by {{provider}}",
-                {
-                  title: fulfillmentObj.title,
-                  provider: capitalize(fulfillment.provider_id),
-                }
-              )}
+            : "Fullfilment"}
         </div>
         <div className="text-grey-50 flex">
           {!fulfillment.shipped_at
@@ -171,24 +61,6 @@ export const FormattedFulfillment = ({
           </div>
         )}
       </div>
-      {!fulfillment.canceled_at && !fulfillment.shipped_at && (
-        <div className="flex items-center space-x-2">
-          <Actionables
-            actions={[
-              {
-                label: t("templates-mark-shipped", "Mark Shipped"),
-                icon: <PackageIcon size={"20"} />,
-                onClick: () => setFullfilmentToShip(fulfillment),
-              },
-              // {
-              //   label: t("templates-cancel-fulfillment", "Cancel Fulfillment"),
-              //   icon: <CancelIcon size={"20"} />,
-              //   onClick: () => handleCancelFulfillment(),
-              // },
-            ]}
-          />
-        </div>
-      )}
     </div>
   )
 }

@@ -1,4 +1,16 @@
-export const TrackingLink = ({ trackingLink }) => {
+import { TrackingLink as TrackingLinkType } from "@medusajs/medusa"
+import ClipboardCopyIcon from "../../../../components/fundamentals/icons/clipboard-copy-icon"
+
+export const TrackingLink = ({
+  trackingLink,
+}: {
+  trackingLink: TrackingLinkType
+}) => {
+  const handleCopyTrackingNumber = () => {
+    navigator.clipboard.writeText(trackingLink.tracking_number)
+    alert("Tracking number copied to clipboard")
+  }
+
   if (trackingLink.url) {
     return (
       <a
@@ -12,7 +24,12 @@ export const TrackingLink = ({ trackingLink }) => {
     )
   } else {
     return (
-      <span className="text-blue-60 ml-2">{trackingLink.tracking_number} </span>
+      <span
+        className="text-blue-60 ml-2 inline-flex cursor-pointer flex-row items-center gap-1 font-semibold"
+        onClick={handleCopyTrackingNumber}
+      >
+        {trackingLink.tracking_number} <ClipboardCopyIcon />
+      </span>
     )
   }
 }

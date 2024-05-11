@@ -1,24 +1,20 @@
 import { useTranslation } from "react-i18next"
 import StatusDot from "../../../../components/fundamentals/status-indicator"
+import { Order } from "@medusajs/medusa"
 
-export const FulfillmentStatusComponent = ({ status }) => {
+type Props = {
+  status: Order["fulfillment_status"]
+}
+
+export const FulfillmentStatusComponent = ({ status }: Props) => {
   const { t } = useTranslation()
 
   switch (status) {
     case "shipped":
-      return (
-        <StatusDot
-          title={t("templates-shipped", "Shipped")}
-          variant="success"
-        />
-      )
+      return <StatusDot title="Shipped" variant="success" />
     case "fulfilled":
-      return (
-        <StatusDot
-          title={t("templates-fulfilled", "Fulfilled")}
-          variant="warning"
-        />
-      )
+    case "not_fulfilled":
+      return <StatusDot title="Waiting for shipping" variant="warning" />
     case "canceled":
       return (
         <StatusDot
@@ -27,37 +23,9 @@ export const FulfillmentStatusComponent = ({ status }) => {
         />
       )
     case "partially_fulfilled":
-      return (
-        <StatusDot
-          title={t("templates-partially-fulfilled", "Partially fulfilled")}
-          variant="warning"
-        />
-      )
     case "requires_action":
-      return (
-        <StatusDot
-          title={t(
-            "templates-fulfillment-status-requires-action",
-            "Requires Action"
-          )}
-          variant="danger"
-        />
-      )
-    case "not_fulfilled":
-      return (
-        <StatusDot
-          title={t("templates-awaiting-fulfillment", "Awaiting fulfillment")}
-          variant="danger"
-        />
-      )
     case "partially_shipped":
-      return (
-        <StatusDot
-          title={t("templates-partially-shipped", "Partially Shipped")}
-          variant="warning"
-        />
-      )
     default:
-      return null
+      return <StatusDot title="Unknown status" variant="warning" />
   }
 }

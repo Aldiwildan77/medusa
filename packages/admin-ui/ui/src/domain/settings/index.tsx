@@ -8,7 +8,7 @@ import SettingsPageErrorElement from "../../components/extensions/setting-contai
 import FeatureToggle from "../../components/fundamentals/feature-toggle"
 // import ArrowUTurnLeft from "../../components/fundamentals/icons/arrow-uturn-left"
 // import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
-// import CoinsIcon from "../../components/fundamentals/icons/coins-icon"
+import CoinsIcon from "../../components/fundamentals/icons/coins-icon"
 import CrosshairIcon from "../../components/fundamentals/icons/crosshair-icon"
 import GearIcon from "../../components/fundamentals/icons/gear-icon"
 import HappyIcon from "../../components/fundamentals/icons/happy-icon"
@@ -41,12 +41,12 @@ const settings: SettingsCardType[] = [
   //   to: "/a/publishable-api-keys",
   //   feature_flag: "publishable_api_keys",
   // },
-  // {
-  //   heading: "Currencies",
-  //   description: "Manage the currencies of your store",
-  //   icon: CoinsIcon,
-  //   to: "/a/settings/currencies",
-  // },
+  {
+    heading: "Currencies",
+    description: "Manage the currencies of your store",
+    icon: CoinsIcon,
+    to: "/a/settings/currencies",
+  },
   {
     heading: "Personal Information",
     description: "Manage your Medusa profile",

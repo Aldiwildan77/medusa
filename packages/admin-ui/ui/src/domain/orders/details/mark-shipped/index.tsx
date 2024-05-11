@@ -1,6 +1,12 @@
-import { Fulfillment } from "@medusajs/medusa"
+import {
+  AdminPostOrdersOrderFulfillmentsReq,
+  AdminPostOrdersOrderShipmentReq,
+  Fulfillment,
+  Order,
+} from "@medusajs/medusa"
 import {
   useAdminCreateClaimShipment,
+  useAdminCreateFulfillment,
   useAdminCreateShipment,
   useAdminCreateSwapShipment,
 } from "medusa-react"
@@ -15,11 +21,13 @@ import Input from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { getFulfillableQuantity } from "../create-fulfillment/item-table"
+import { isDefined } from "../../../../utils/is-defined"
 
 type MarkShippedModalProps = {
   orderId: string
-  fulfillment: Fulfillment
-  handleCancel: () => void
+  handleClose: () => void
+  orderToFulfill: Order
 }
 
 type MarkShippedFormData = {
@@ -30,8 +38,8 @@ type MarkShippedFormData = {
 
 const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   orderId,
-  fulfillment,
-  handleCancel,
+  handleClose,
+  orderToFulfill,
 }) => {
   const { t } = useTranslation()
   const { control, watch, handleSubmit } = useForm<MarkShippedFormData>({
@@ -40,13 +48,8 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     },
     shouldUnregister: true,
   })
-  const [noNotis, setNoNotis] = useState(false)
 
-  const {
-    fields,
-    append: appendTracking,
-    remove: removeTracking,
-  } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "tracking_numbers",
   })
@@ -59,81 +62,60 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     ...watchedFields[index],
   }))
 
+  const createOrderFulfillment = useAdminCreateFulfillment(orderId)
   const markOrderShipped = useAdminCreateShipment(orderId)
-  const markSwapShipped = useAdminCreateSwapShipment(orderId)
-  const markClaimShipped = useAdminCreateClaimShipment(orderId)
+  // const markSwapShipped = useAdminCreateSwapShipment(orderId)
+  // const markClaimShipped = useAdminCreateClaimShipment(orderId)
 
   const isSubmitting =
-    markOrderShipped.isLoading ||
-    markSwapShipped.isLoading ||
-    markClaimShipped.isLoading
+    markOrderShipped.isLoading || createOrderFulfillment.isLoading
 
   const notification = useNotification()
 
-  const onSubmit = (data: MarkShippedFormData) => {
-    const resourceId =
-      fulfillment.claim_order_id || fulfillment.swap_id || fulfillment.order_id
-    const [type] = resourceId.split("_")
+  const onSubmit = async (data: MarkShippedFormData) => {
+    const quantities = (orderToFulfill as Order).items.reduce((acc, next) => {
+      return {
+        ...acc,
+        [next.id]: getFulfillableQuantity(next),
+      }
+    }, {}) as Record<string, number>
 
-    const tracking_numbers = data.tracking_numbers.map((tn) => tn.value)
+    const createFulfillmentReq: AdminPostOrdersOrderFulfillmentsReq = {
+      no_notification: false,
+      items: Object.entries(quantities)
+        .filter(([, value]) => !!value)
+        .map(([key, value]) => ({
+          item_id: key,
+          quantity: value,
+        })),
+    }
 
-    type actionType =
-      | typeof markOrderShipped
-      | typeof markSwapShipped
-      | typeof markClaimShipped
+    const createdFulfillment = await createOrderFulfillment.mutateAsync(
+      createFulfillmentReq
+    )
 
-    let action: actionType = markOrderShipped
-    let successText = t(
+    const tracking_numbers = data.tracking_numbers
+      .map((tn) => tn.value)
+      .filter(isDefined)
+
+    const successText = t(
       "mark-shipped-successfully-marked-order-as-shipped",
       "Successfully marked order as shipped"
     )
-    let requestObj
-
-    switch (type) {
-      case "swap":
-        action = markSwapShipped
-        requestObj = {
-          fulfillment_id: fulfillment.id,
-          swap_id: resourceId,
-          tracking_numbers,
-          no_notification: noNotis,
-        }
-        successText = t(
-          "mark-shipped-successfully-marked-swap-as-shipped",
-          "Successfully marked swap as shipped"
-        )
-        break
-
-      case "claim":
-        action = markClaimShipped
-        requestObj = {
-          fulfillment_id: fulfillment.id,
-          claim_id: resourceId,
-          tracking_numbers,
-        }
-        successText = t(
-          "mark-shipped-successfully-marked-claim-as-shipped",
-          "Successfully marked claim as shipped"
-        )
-        break
-
-      default:
-        requestObj = {
-          fulfillment_id: fulfillment.id,
-          tracking_numbers,
-          no_notification: noNotis,
-        }
-        break
+    const shipOrderReq: AdminPostOrdersOrderShipmentReq = {
+      fulfillment_id: createdFulfillment?.order?.fulfillments?.[0]?.id || "",
+      tracking_numbers,
+      no_notification: false,
     }
 
-    action.mutate(requestObj, {
+    markOrderShipped.mutate(shipOrderReq, {
       onSuccess: () => {
         notification(
           t("mark-shipped-success", "Success"),
           successText,
           "success"
         )
-        handleCancel()
+        handleClose()
       },
       onError: (err) =>
         notification(
@@ -145,20 +127,15 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   }
 
   return (
-    <Modal handleClose={handleCancel} isLargeModal>
+    <Modal handleClose={handleClose} isLargeModal>
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
           console.log(errors)
         })}
       >
         <Modal.Body>
-          <Modal.Header handleClose={handleCancel}>
-            <span className="inter-xlarge-semibold">
-              {t(
-                "mark-shipped-mark-fulfillment-shipped",
-                "Mark Fulfillment Shipped"
-              )}
-            </span>
+          <Modal.Header handleClose={handleClose}>
+            <span className="inter-xlarge-semibold">Send Shipment</span>
           </Modal.Header>
           <Modal.Content>
             <div className="flex flex-col">
@@ -177,7 +154,6 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                     render={({ field }) => {
                       return (
                         <Input
-                          deletable={index !== 0}
                           label={
                             index === 0
                               ? t(
@@ -192,7 +168,6 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                             "Tracking number..."
                           )}
                           {...field}
-                          onDelete={() => removeTracking(index)}
                         />
                       )
                     }}
@@ -200,7 +175,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                 ))}
               </div>
             </div>
-            <div className="mt-4 flex w-full justify-end">
+            {/* <div className="mt-4 flex w-full justify-end">
               <Button
                 size="small"
                 onClick={() => appendTracking({ value: undefined })}
@@ -212,41 +187,16 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   "+ Add Additional Tracking Number"
                 )}
               </Button>
-            </div>
+            </div> */}
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-between">
-              <div
-                className="flex h-full cursor-pointer items-center"
-                onClick={() => setNoNotis(!noNotis)}
-              >
-                <div
-                  className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
-                    !noNotis && "bg-violet-60"
-                  }`}
-                >
-                  <span className="self-center">
-                    {!noNotis && <CheckIcon size={16} />}
-                  </span>
-                </div>
-                <input
-                  id="noNotification"
-                  className="hidden"
-                  name="noNotification"
-                  checked={!noNotis}
-                  type="checkbox"
-                />
-                <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
-                  {t("mark-shipped-send-notifications", "Send notifications")}
-                  <IconTooltip content="" />
-                </span>
-              </div>
+            <div className="flex h-8 w-full justify-end">
               <div className="flex">
                 <Button
                   variant="ghost"
                   className="text-small mr-2 w-32 justify-center"
                   size="large"
-                  onClick={handleCancel}
+                  onClick={handleClose}
                   type="button"
                 >
                   {t("mark-shipped-cancel", "Cancel")}
