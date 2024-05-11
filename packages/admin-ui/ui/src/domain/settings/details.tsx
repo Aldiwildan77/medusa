@@ -1,23 +1,36 @@
-import { Store } from "@medusajs/medusa"
+import { AdminPostStoreReq, Store } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdateStore } from "medusa-react"
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import BackButton from "../../components/atoms/back-button"
 import Input from "../../components/molecules/input"
 import BodyCard from "../../components/organisms/body-card"
 import useNotification from "../../hooks/use-notification"
 import { getErrorMessage } from "../../utils/error-messages"
+import { NextSelect } from "../../components/molecules/select/next-select"
+import { Option } from "../../types/shared"
 
 type AccountDetailsFormData = {
   name: string
   swap_link_template: string | undefined
   payment_link_template: string | undefined
   invite_link_template: string | undefined
+  rajaongkir_courier: Option[] | undefined
 }
 
+const courierListString =
+  "jne, pos, tiki, rpx, pandu, wahana, sicepat, jnt, pahala, sap, jet, indah, dse, slis, first, ncs, star, ninja, lion, idl, rex, ide, sentral, anteraja, jtl"
+const COURIER_OPTIONS: Option[] = courierListString
+  .split(", ")
+  .map((courier) => ({
+    label: courier.toUpperCase(),
+    value: courier,
+  }))
+
 const AccountDetails = () => {
-  const { register, reset, handleSubmit } = useForm<AccountDetailsFormData>()
+  const { register, reset, handleSubmit, control } =
+    useForm<AccountDetailsFormData>()
   const { store } = useAdminStore()
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()
@@ -37,7 +50,7 @@ const AccountDetails = () => {
     const validateSwapLinkTemplate = validateUrl(data.swap_link_template)
     const validatePaymentLinkTemplate = validateUrl(data.payment_link_template)
     const validateInviteLinkTemplate = validateUrl(data.invite_link_template)
-
+    const { rajaongkir_courier, ...others } = data
     if (!validateSwapLinkTemplate) {
       notification(
         t("settings-error", "Error"),
@@ -65,7 +78,14 @@ const AccountDetails = () => {
       return
     }
 
-    mutate(data, {
+    const payload: AdminPostStoreReq = {
+      ...others,
+      metadata: {
+        rajaongkir_courier: rajaongkir_courier?.map((c) => c.value).join(","),
+      },
+    }
+
+    mutate(payload, {
       onSuccess: () => {
         notification(
           t("settings-success", "Success"),
@@ -123,6 +143,26 @@ const AccountDetails = () => {
                 {...register("name")}
                 placeholder={t("settings-medusa-store", "Medusa Store")}
               />
+              <div className="mt-base">
+                <Controller
+                  name="rajaongkir_courier"
+                  control={control}
+                  render={({ field: { value, onChange } }) => {
+                    return (
+                      <NextSelect
+                        label="Active couriers"
+                        onChange={onChange}
+                        options={COURIER_OPTIONS}
+                        value={value}
+                        placeholder="Choose courier..."
+                        isClearable
+                        isMulti
+                        selectAll
+                      />
+                    )
+                  }}
+                />
+              </div>
             </div>
             <div>
               <h2 className="inter-base-semibold mb-base">
@@ -178,6 +218,11 @@ const mapStoreDetails = (store: Store): AccountDetailsFormData => {
     swap_link_template: store.swap_link_template,
     payment_link_template: store.payment_link_template,
     invite_link_template: store.invite_link_template,
+    rajaongkir_courier:
+      store.metadata?.rajaongkir_courier?.split(",").map((c) => ({
+        label: c.toUpperCase(),
+        value: c,
+      })) || [],
   }
 }
 
