@@ -4,20 +4,23 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag version/name"
+        description: "Tag version"
         required: true
-      medusa_backend_url:
-        description: "Fill the medusa host (backend)"
-      host:
-        description: "Fill the admin ui host"
+      brand:
+        type: choice
+        description: "Brand"
+        required: true
+        options:
+          - "kilap"
+          - "dakter"
+          - "otoke"
+          - "purfress"
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  RELEASE_VERSION: ${{ github.event.release.tag_name }}
-  LATEST_VERSION: latest
-  MEDUSA_ADMIN_BACKEND_URL: ${{ vars.MEDUSA_ADMIN_BACKEND_URL }}
-  HOST: ${{ vars.HOST }}
+  RELEASE_VERSION: ${{ github.event.inputs.tag }}
+  COMMIT_HASH: ""
 
 jobs:
   build-and-push:
@@ -38,29 +41,37 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_GITHUB_TOKEN }}
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: Sanitize environment variables
         run: |
-          echo "COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
           echo "IMAGE_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+          if [[ ${{ env.RELEASE_VERSION }} == "latest" ]]; then
+            echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+          else
+            echo "RELEASE_VERSION=${GITHUB_SHA}" >> $GITHUB_ENV
+          fi
+          echo "COMMIT_HASH=$(git rev-parse ${{ steps.extract_branch.outputs.branch }})" >> $GITHUB_ENV
 
-      - name: Set output release tag by workflow_dispatch
-        id: dispatch
-        if: github.event_name == 'workflow_dispatch'
-        run: echo "RELEASE_VERSION=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
-
-      - name: Set output release tag by push
-        id: push
-        if: github.event_name == 'push'
-        run: echo "RELEASE_VERSION=${{ github.event.head_commit.id }}" >> $GITHUB_ENV
-
-      - name: Check and replace variable
+      # read file from ./config/action/${{ github.event.inputs.brand }}.yml
+      # make sure the file is exist and the variable name is uppercase
+      - name: Parse brand config deployment to action environment
         run: |
-          if [ -n "${{ github.event.inputs.medusa_backend_url }}" ]; then
-            echo "MEDUSA_ADMIN_BACKEND_URL=${{ github.event.inputs.medusa_backend_url }}" >> $GITHUB_ENV
-          fi
-          if [ -n "${{ github.event.inputs.host }}" ]; then
-            echo "HOST=${{ github.event.inputs.host }}" >> $GITHUB_ENV
-          fi
+          env_file_path="./config/action/${{ github.event.inputs.brand }}.yml"
+          echo "Parsing file path: $env_file_path"
+          while IFS=: read -r key value; do
+            echo "Parsing env: $key=$value"
+
+            # Trim leading/trailing whitespace from key and value
+            key=$(echo "$key" | tr -d '[:space:]')
+            value=$(echo "$value" | tr -d '[:space:]')
+
+            # Append the key-value pair to $GITHUB_ENV
+            echo "$key=$value" >> $GITHUB_ENV
+          done < "$env_file_path"
 
       - name: Build and Push
         uses: docker/build-push-action@v5
@@ -70,7 +81,7 @@ jobs:
           build-args: |
             MEDUSA_ADMIN_BACKEND_URL=${{ env.MEDUSA_ADMIN_BACKEND_URL }}
             HOST=${{ env.HOST }}
-            COMMIT_HASH=${{ env.COMMIT_HASH }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.brand }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.COMMIT_HASH }}
