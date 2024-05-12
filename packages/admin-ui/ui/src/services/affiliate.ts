@@ -208,3 +208,26 @@ export const editTargettedCampaign = async (
 
   return json
 }
+
+export type ManualEnrollmentTransactionAffiliatePayload = {
+  orderId: string
+}
+
+export const manualEnrollmentAffiliateTransaction = async (
+  payload: ManualEnrollmentTransactionAffiliatePayload
+): Promise<null> => {
+  await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/transaction/manual-enroll`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        order_id: payload.orderId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  return null
+}

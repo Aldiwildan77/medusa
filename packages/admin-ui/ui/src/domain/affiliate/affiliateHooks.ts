@@ -15,6 +15,7 @@ import type {
   GetSingleTargettedCampaignResponses,
   GetTargettedCampaignPayload,
   GetTargettedCampaignResponses,
+  ManualEnrollmentTransactionAffiliatePayload,
   ShopCampaign,
   UpdateShopCampaignPayload,
 } from "../../services/affiliate"
@@ -25,6 +26,7 @@ import {
   getShopCampaign,
   getSingleTargettedCampaign,
   getTargettedCampaign,
+  manualEnrollmentAffiliateTransaction,
   updateShopCampaign,
 } from "../../services/affiliate"
 
@@ -95,4 +97,17 @@ export const useAdminEditTargettedCampaign = (
   >
 ) => {
   return useMutation(async (payload) => editTargettedCampaign(payload), options)
+}
+
+export const useManualEnrollmentAffiliateTransaction = (
+  options?: UseMutationOptions<
+    null,
+    unknown,
+    ManualEnrollmentTransactionAffiliatePayload
+  >
+) => {
+  return useMutation(
+    async (payload) => manualEnrollmentAffiliateTransaction(payload),
+    options
+  )
 }

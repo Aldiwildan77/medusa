@@ -23,6 +23,7 @@ import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { getFulfillableQuantity } from "../create-fulfillment/item-table"
 import { isDefined } from "../../../../utils/is-defined"
+import { useManualEnrollmentAffiliateTransaction } from "../../../affiliate/affiliateHooks"
 
 type MarkShippedModalProps = {
   orderId: string
@@ -64,11 +65,14 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
 
   const createOrderFulfillment = useAdminCreateFulfillment(orderId)
   const markOrderShipped = useAdminCreateShipment(orderId)
+  const manualEnrollment = useManualEnrollmentAffiliateTransaction()
   // const markSwapShipped = useAdminCreateSwapShipment(orderId)
   // const markClaimShipped = useAdminCreateClaimShipment(orderId)
 
   const isSubmitting =
-    markOrderShipped.isLoading || createOrderFulfillment.isLoading
+    markOrderShipped.isLoading ||
+    createOrderFulfillment.isLoading ||
+    manualEnrollment.isLoading
 
   const notification = useNotification()
 
@@ -108,22 +112,26 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       no_notification: false,
     }
 
-    markOrderShipped.mutate(shipOrderReq, {
-      onSuccess: () => {
-        notification(
-          t("mark-shipped-success", "Success"),
-          successText,
-          "success"
-        )
-        handleClose()
-      },
-      onError: (err) =>
-        notification(
-          t("mark-shipped-error", "Error"),
-          getErrorMessage(err),
-          "error"
-        ),
-    })
+    markOrderShipped.mutateAsync(shipOrderReq)
+    manualEnrollment.mutate(
+      { orderId },
+      {
+        onSuccess: () => {
+          notification(
+            t("mark-shipped-success", "Success"),
+            successText,
+            "success"
+          )
+          handleClose()
+        },
+        onError: (err) =>
+          notification(
+            t("mark-shipped-error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
+      }
+    )
   }
 
   return (
