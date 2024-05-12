@@ -69,6 +69,7 @@ jobs:
           build-args: |
             MEDUSA_ADMIN_BACKEND_URL=${{ env.MEDUSA_ADMIN_BACKEND_URL }}
             HOST=${{ env.HOST }}
+            COMMIT_HASH=${{ github.event.head_commit.id }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_VERSION }}

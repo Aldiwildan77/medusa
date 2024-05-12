@@ -15,6 +15,8 @@ RUN yarn build
 # Get values from build-args (https://docs.docker.com/reference/cli/docker/buildx/build/#build-arg)
 # the value that is set here is used as the default value
 ARG MEDUSA_ADMIN_BACKEND_URL="http://localhost:9000"
+ARG COMMIT_HASH
+ENV COMMIT_HASH=${COMMIT_HASH}
 
 # Build the admin package for medusa
 RUN yarn --cwd packages/admin build:admin --backend ${MEDUSA_ADMIN_BACKEND_URL}

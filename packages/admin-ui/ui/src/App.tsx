@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -8,6 +8,7 @@ import {
 import Spinner from "./components/atoms/spinner"
 import { AnalyticsProvider } from "./providers/analytics-provider"
 import { WRITE_KEY } from "./constants/analytics"
+import { COMMIT_HASH } from "./constants/version"
 
 const NotFound = lazy(() => import("./pages/404"))
 const Dashboard = lazy(() => import("./pages/a"))
@@ -52,10 +53,16 @@ const Loading = () => (
   </div>
 )
 
-const App = () => (
-  <Suspense fallback={<Loading />}>
-    <RouterProvider router={router} />
-  </Suspense>
-)
+const App = () => {
+  useEffect(() => {
+    console.log(`version: ${COMMIT_HASH}`)
+  }, [])
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  )
+}
 
 export default App
