@@ -14,10 +14,39 @@ export type ShopCampaign = {
 }
 
 export const getShopCampaign = async (): Promise<ShopCampaign> => {
-  const res = await fetch(
-    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?user_target_type=ALL&product_target_type=ALL&sort_by=ASC&order_by=CREATED_AT&limit=1&page=1`
+  const query = new URLSearchParams({
+    user_target_type: "ALL",
+    product_target_type: "ALL",
+    sort_by: "ASC",
+    order_by: "CREATED_AT",
+    limit: "1",
+    page: "1",
+  })
+  let res = await fetch(
+    `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?${query.toString()}`
   ).then(async (res) => res.json())
 
+  console.log("res.data", res.data)
+  if (res.data.length === 0) {
+    await createTargettedCampaign({
+      name: "Shop Campaign",
+      started_at: new Date().toISOString(),
+      ended_at: null,
+      user_target_type: "ALL",
+      product_target_type: "ALL",
+      user_targets: [],
+      product_targets: [
+        {
+          reference: "ALL",
+          amount: 0,
+          type: "PERCENTAGE",
+        },
+      ],
+    })
+    res = await fetch(
+      `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?${query.toString()}`
+    ).then(async (res) => res.json())
+  }
   const data = res.data[0] as AffiliateGroups
   const shopCampaign = data.product_targets?.find((t) => t.reference === "ALL")
 
