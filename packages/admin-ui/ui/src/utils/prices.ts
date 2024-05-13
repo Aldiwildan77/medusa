@@ -114,7 +114,7 @@ export function formatAmountWithSymbol({
   digits,
   tax = 0,
 }: FormatMoneyProps) {
-  let locale = "en-US"
+  let locale = "id-ID"
 
   // We need this to display 'Kr' instead of 'DKK'
   if (currency.toLowerCase() === "dkk") {

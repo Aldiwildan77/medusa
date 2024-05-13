@@ -260,3 +260,43 @@ export const manualEnrollmentAffiliateTransaction = async (
 
   return null
 }
+
+export type GetAffiliateSummaryPayload = {
+  startPeriodAt: string
+  endPeriodAt: string
+}
+
+export type GetAffiliateSummaryResponses = {
+  totalProductSold: number
+  totalOrders: number
+  totalCommission: number
+  totalRevenue: number
+  totalCustomer: number
+  totalAffiliator: number
+}
+
+export const getAffiliateSummary = async (
+  payload: GetAffiliateSummaryPayload
+): Promise<GetAffiliateSummaryResponses> => {
+  const url = new URL(`${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/analytics`)
+
+  if (payload.startPeriodAt) {
+    url.searchParams.append("start_period_at", payload.startPeriodAt)
+  }
+
+  if (payload.endPeriodAt) {
+    url.searchParams.append("end_period_at", payload.endPeriodAt)
+  }
+
+  const res = await fetch(url.toString()).then(async (res) => res.json())
+  console.log("res", res)
+  const data = res.data
+  return {
+    totalProductSold: data.total_product_sold,
+    totalOrders: data.total_order,
+    totalCommission: data.total_commission,
+    totalRevenue: data.total_revenue,
+    totalCustomer: data.total_customer,
+    totalAffiliator: data.total_affiliator,
+  }
+}

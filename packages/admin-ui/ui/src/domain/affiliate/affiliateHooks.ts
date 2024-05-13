@@ -9,6 +9,8 @@ import type {
   CreateTargettedCampaignResponse,
   EditTargettedCampaignPayload,
   EditTargettedCampaignResponse,
+  GetAffiliateSummaryPayload,
+  GetAffiliateSummaryResponses,
   GetListAffiliatorPayload,
   GetListAffiliatorResponses,
   GetSingleTargettedCampaignPayload,
@@ -22,6 +24,7 @@ import type {
 import {
   createTargettedCampaign,
   editTargettedCampaign,
+  getAffiliateSummary,
   getListAffiliator,
   getShopCampaign,
   getSingleTargettedCampaign,
@@ -110,4 +113,15 @@ export const useManualEnrollmentAffiliateTransaction = (
     async (payload) => manualEnrollmentAffiliateTransaction(payload),
     options
   )
+}
+
+export const useGetAffiliateSummary = (
+  payload: GetAffiliateSummaryPayload,
+  options?: UseQueryOptions<GetAffiliateSummaryResponses>
+) => {
+  return useQuery({
+    queryKey: ["affiliatorSummary", JSON.stringify(payload)],
+    queryFn: async () => getAffiliateSummary(payload),
+    ...options,
+  })
 }

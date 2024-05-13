@@ -8,6 +8,7 @@ import Spinner from "../../components/atoms/spinner"
 import XCircleIcon from "../../components/fundamentals/icons/x-circle-icon"
 import { Button, IconButton } from "@medusajs/ui"
 import useNotification from "../../hooks/use-notification"
+import { Card } from "../../components/organisms/Card"
 
 export function ShopCampaign() {
   const [isEdit, setIsEdit] = useState(false)
@@ -48,18 +49,10 @@ export function ShopCampaign() {
   }
 
   return (
-    <div className="px-large rounded-rounded bg-grey-0 border-grey-20 pb-large flex w-full flex-col border">
-      <div className="py-large">
-        <div className="flex flex-col items-start justify-between">
-          <h1 className="inter-xlarge-semibold text-grey-90">Shop Campaign</h1>
-          <h3 className="inter-small-regular text-grey-50 pt-1.5">
-            Shop Campaign allows you to set universal commission rate for all of
-            your whole shop. Once setup, all of your products will be available
-            for Affiliates to promote on Shopee channels or social media
-            platforms. You only pay commission for successful orders.
-          </h3>
-        </div>
-      </div>
+    <Card
+      title="Shop Campaign"
+      subtitle="Shop Campaign allows you to set universal commission rate for all of your whole shop. Once setup, all of your products will be available for Affiliates to promote on Shopee channels or social media platforms. You only pay commission for successful orders."
+    >
       <div className="flex flex-col">
         {getShopCampaignQuery.isLoading ? (
           <div className="flex w-full items-center justify-center">
@@ -126,6 +119,6 @@ export function ShopCampaign() {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   )
 }
