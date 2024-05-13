@@ -1,6 +1,5 @@
 import { useState } from "react"
 import EditIcon from "../../components/fundamentals/icons/edit-icon"
-import BodyCard from "../../components/organisms/body-card"
 import {
   useAdminUpdateShopCampaign,
   useGetShopCampaign,
@@ -49,75 +48,84 @@ export function ShopCampaign() {
   }
 
   return (
-    <BodyCard
-      forceDropdown={false}
-      compact={true}
-      title="Shop Campaign"
-      subtitle="Shop Campaign allows you to set universal commission rate for all of your whole shop. Once setup, all of your products will be available for Affiliates to promote on Shopee channels or social media platforms. You only pay commission for successful orders."
-      className="pb-large !h-fit"
-    >
-      {getShopCampaignQuery.isLoading ? (
-        <div className="flex w-full items-center justify-center">
-          <Spinner variant="secondary" />
+    <div className="px-large rounded-rounded bg-grey-0 border-grey-20 pb-large flex w-full flex-col border">
+      <div className="py-large">
+        <div className="flex flex-col items-start justify-between">
+          <h1 className="inter-xlarge-semibold text-grey-90">Shop Campaign</h1>
+          <h3 className="inter-small-regular text-grey-50 pt-1.5">
+            Shop Campaign allows you to set universal commission rate for all of
+            your whole shop. Once setup, all of your products will be available
+            for Affiliates to promote on Shopee channels or social media
+            platforms. You only pay commission for successful orders.
+          </h3>
         </div>
-      ) : (
-        <div className="grid grid-cols-12">
-          <p className="col-span-3">Commission Rate</p>
-          <div className="col-span-3 flex flex-row items-center gap-3">
-            {isEdit ? (
-              <>
-                <div className="flex items-center gap-1">
-                  <input
-                    type="number"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                    value={rate}
-                    onChange={(e) => {
-                      setRate(Number(e.target.value))
-                    }}
-                  />
-                  <span>
+      </div>
+      <div className="flex flex-col">
+        {getShopCampaignQuery.isLoading ? (
+          <div className="flex w-full items-center justify-center">
+            <Spinner variant="secondary" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-12">
+            <p className="col-span-3">Commission Rate</p>
+            <div className="col-span-3 flex flex-row items-center gap-3">
+              {isEdit ? (
+                <>
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                      value={rate}
+                      onChange={(e) => {
+                        setRate(Number(e.target.value))
+                      }}
+                    />
+                    <span>
+                      {getShopCampaignQuery.data?.type === "PERCENTAGE"
+                        ? "%"
+                        : ""}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="primary"
+                      size="small"
+                      onClick={handleEdit}
+                      isLoading={updateShopCampaignMutation.isLoading}
+                    >
+                      Save
+                    </Button>
+                    <IconButton
+                      onClick={
+                        updateShopCampaignMutation.isLoading
+                          ? undefined
+                          : handleCloseEdit
+                      }
+                      size="small"
+                    >
+                      <XCircleIcon className="text-red-700" />
+                    </IconButton>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p>
+                    {rate}
                     {getShopCampaignQuery.data?.type === "PERCENTAGE"
                       ? "%"
                       : ""}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="primary"
-                    size="small"
-                    onClick={handleEdit}
-                    isLoading={updateShopCampaignMutation.isLoading}
-                  >
-                    Save
-                  </Button>
-                  <IconButton
-                    onClick={
-                      updateShopCampaignMutation.isLoading
-                        ? undefined
-                        : handleCloseEdit
-                    }
-                    size="small"
-                  >
-                    <XCircleIcon className="text-red-700" />
-                  </IconButton>
-                </div>
-              </>
-            ) : (
-              <>
-                <p>
-                  {rate}
-                  {getShopCampaignQuery.data?.type === "PERCENTAGE" ? "%" : ""}
-                </p>
-                <EditIcon
-                  className="text-blue-70 cursor-pointer"
-                  size="16px"
-                  onClick={handleOpenEdit}
-                />
-              </>
-            )}
+                  </p>
+                  <EditIcon
+                    className="text-blue-70 cursor-pointer"
+                    size="16px"
+                    onClick={handleOpenEdit}
+                  />
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </BodyCard>
+        )}
+      </div>
+    </div>
   )
 }
