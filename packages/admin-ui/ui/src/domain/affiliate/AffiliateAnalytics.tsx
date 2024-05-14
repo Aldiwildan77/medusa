@@ -58,7 +58,7 @@ export function AffiliateAnalytics() {
   }, [affiliateSummary.data])
 
   return (
-    <Card title="Analytics">
+    <Card title="Overall Analytics">
       <div className={`flex flex-col gap-4`}>
         <div className="w-[250px]">
           <DatePicker
@@ -68,29 +68,29 @@ export function AffiliateAnalytics() {
               {
                 label: "Today",
                 dateRange: {
-                  to: dayjs().toDate(),
-                  from: dayjs().toDate(),
+                  from: dayjs().startOf("day").toDate(),
+                  to: dayjs().endOf("day").toDate(),
                 },
               },
               {
                 label: "Past 7 days",
                 dateRange: {
-                  to: dayjs().toDate(),
-                  from: dayjs().subtract(7, "day").toDate(),
+                  from: dayjs().subtract(7, "day").startOf("day").toDate(),
+                  to: dayjs().endOf("day").toDate(),
                 },
               },
               {
                 label: "Past 30 days",
                 dateRange: {
-                  to: dayjs().toDate(),
-                  from: dayjs().subtract(30, "day").toDate(),
+                  from: dayjs().subtract(30, "day").startOf("day").toDate(),
+                  to: dayjs().endOf("day").toDate(),
                 },
               },
               {
                 label: "Past 90 days",
                 dateRange: {
-                  to: dayjs().toDate(),
-                  from: dayjs().subtract(90, "day").toDate(),
+                  from: dayjs().subtract(90, "day").startOf("day").toDate(),
+                  to: dayjs().endOf("day").toDate(),
                 },
               },
             ]}
@@ -100,11 +100,8 @@ export function AffiliateAnalytics() {
             }}
             onChange={(date) => {
               setDate({
-                from:
-                  date?.from?.toISOString() ||
-                  dayjs().startOf("day").toISOString(),
-                to:
-                  date?.to?.toISOString() || dayjs().endOf("day").toISOString(),
+                from: dayjs(date?.from).startOf("day").toISOString(),
+                to: dayjs(date?.to).endOf("day").toISOString(),
               })
             }}
           />
