@@ -155,7 +155,16 @@ const OrderDetails = () => {
   const [showRefund, setShowRefund] = useState(false)
   const [showFulfillmentShipment, setShowFulfillmentShipment] = useState(false)
 
-  const { order, isLoading } = useAdminOrder(id!)
+  const { order, isLoading } = useAdminOrder(
+    id as string,
+    {
+      expand:
+        "cart,customer,shipping_address,billing_address,discounts,fulfillments,gift_card_transactions,gift_cards,region,items,payments,refunds,region,returns,sales_channel,shipping_methods",
+    },
+    {
+      enabled: !!id,
+    }
+  )
 
   const capturePayment = useAdminCapturePayment(id!)
   const cancelOrder = useAdminCancelOrder(id!)
@@ -428,7 +437,8 @@ const OrderDetails = () => {
                         Affiliate Code
                       </div>
                       <div>
-                        {(order.metadata?.affiliator_code as string) || "N/A"}
+                        {(order?.cart?.context?.affiliator_code as string) ||
+                          "N/A"}
                       </div>
                     </div>
                   </div>
