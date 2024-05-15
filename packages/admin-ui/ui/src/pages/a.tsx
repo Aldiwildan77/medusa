@@ -25,6 +25,7 @@ import Settings from "../domain/settings"
 import { useRoutes } from "../providers/route-provider"
 import { isRoute } from "../utils/extensions"
 import { AnalyticsPage } from "./analytics"
+import { FreeSampleRoutes } from "../domain/free-sample/FreeSampleRoutes"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -67,6 +68,7 @@ const DashboardRoutes = () => {
           <Route path="inventory/*" element={<Inventory />} />
           <Route path="analytics/*" element={<AnalyticsPage />} />
           <Route path="affiliate/*" element={<AffiliateRoutes />} />
+          <Route path="free-sample/*" element={<FreeSampleRoutes />} />
           {injectedRoutes.map((route, index) => {
             return (
               <Route

@@ -9,7 +9,7 @@ import CartIcon from "../../fundamentals/icons/cart-icon"
 // import CashIcon from "../../fundamentals/icons/cash-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
 // import GiftIcon from "../../fundamentals/icons/gift-icon"
-import { UserGroup } from "@medusajs/icons"
+import { UserGroup, ArchiveBox } from "@medusajs/icons"
 import CashIcon from "../../fundamentals/icons/cash-icon"
 import ReorderIcon from "../../fundamentals/icons/reorder-icon"
 import SaleIcon from "../../fundamentals/icons/sale-icon"
@@ -114,6 +114,12 @@ const Sidebar: React.FC = () => {
             icon={<UserGroup />}
             triggerHandler={triggerHandler}
             text={"Affiliate"}
+          />
+          <SidebarMenuItem
+            pageLink={"/a/free-sample"}
+            icon={<ArchiveBox />}
+            triggerHandler={triggerHandler}
+            text={"Free Sample"}
           />
           {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
