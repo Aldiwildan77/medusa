@@ -1,13 +1,21 @@
 export type FreeSample = {
   serial: string
-  status: string
+  status: FreeSampleStatus
   transaction_date: Date
   tracking_code: string
   note: null
   customer: Customer
   shipping: Shipping
-  items: Item[]
+  items: FreeSampleItem[]
 }
+
+export type FreeSampleStatus =
+  | "REJECTED"
+  | "CANCELLED"
+  | "REQUESTED"
+  | "APPROVED"
+  | "SHIPPED"
+  | "COMPLETED"
 
 type Customer = {
   id: string
@@ -17,7 +25,7 @@ type Customer = {
   phone: string
 }
 
-type Item = {
+export type FreeSampleItem = {
   serial: string
   quantity: number
   note: string

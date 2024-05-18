@@ -6,6 +6,7 @@ import { getColor } from "../../../utils/color"
 import Tooltip from "../../../components/atoms/tooltip"
 import dayjs from "dayjs"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
+import { FreeSampleStatus } from "../freeSampleDetail/FreeSampleStatus"
 
 export const useFreeSampleTableColumn = () => {
   const columns: Column<FreeSample>[] = useMemo(
@@ -68,7 +69,7 @@ export const useFreeSampleTableColumn = () => {
       {
         Header: "Status",
         accessor: "status",
-        Cell: ({ cell: { value } }) => value,
+        Cell: ({ cell: { value } }) => <FreeSampleStatus status={value} />,
       },
     ],
     []

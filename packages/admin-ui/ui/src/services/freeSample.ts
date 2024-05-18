@@ -27,3 +27,53 @@ export const getFreeSampleList = async (
 
   return res
 }
+
+export type GetFreeSampleDetailPayload = {
+  serial: string
+}
+
+export type GetFreeSampleDetailResponse = FreeSample
+
+export const getFreeSampleDetail = async (
+  payload: GetFreeSampleDetailPayload
+): Promise<GetFreeSampleDetailResponse> => {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${BASE_URL}/${payload.serial}`
+  ).then(async (res) => res.json())
+
+  return res.data
+}
+
+export type SaveFreeSampleTrackingNumberPayload = {
+  transactionSerial: string
+  trackingNumber: string
+}
+
+export const saveFreeSampleTrackingNumber = async (
+  payload: SaveFreeSampleTrackingNumberPayload
+): Promise<null> => {
+  const body = {
+    transaction_serial: payload.transactionSerial,
+    status: "SHIPPED",
+    tracking_code: payload.trackingNumber,
+  }
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${BASE_URL}/admin/update-status`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  const json = await res.json()
+  // throw error if status code is not 200
+  if (!res.ok) {
+    // throw error from response
+    throw new Error(json)
+  }
+
+  return json
+}

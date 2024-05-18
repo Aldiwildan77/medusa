@@ -8,7 +8,6 @@ import Table, {
 import TableContainer from "../../../components/organisms/table-container"
 import { useTargettedCampaignFilters } from "./freeSampleTableFilters"
 import { useFreeSampleTableColumn } from "./FreeSampleListHooks"
-import BodyCard from "../../../components/organisms/body-card"
 import clsx from "clsx"
 import { useGetFreeSampleList } from "../freeSampleHooks"
 import { FreeSample } from "../../../types/freeSample"
@@ -136,6 +135,7 @@ const TableRow = ({ row, ...rest }: TableRowProps) => {
   return (
     <Table.Row
       color="inherit"
+      linkTo={`/a/free-sample/${row.original.serial}`}
       className={clsx(rest.className, "cursor-pointer hover:bg-gray-100")}
     >
       {row.cells.map((cell, index) => {

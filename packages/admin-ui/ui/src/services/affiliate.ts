@@ -289,7 +289,6 @@ export const getAffiliateSummary = async (
   }
 
   const res = await fetch(url.toString()).then(async (res) => res.json())
-  console.log("res", res)
   const data = res.data
   return {
     totalProductSold: data.total_product_sold,
