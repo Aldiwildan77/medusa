@@ -77,3 +77,36 @@ export const saveFreeSampleTrackingNumber = async (
 
   return json
 }
+
+export type RejectFreeSamplePayload = {
+  transactionSerial: string
+}
+
+export const rejectFreeSample = async (
+  payload: RejectFreeSamplePayload
+): Promise<null> => {
+  const body = {
+    transaction_serial: payload.transactionSerial,
+    status: "REJECTED",
+  }
+
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${BASE_URL}/admin/update-status`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  const json = await res.json()
+  // throw error if status code is not 200
+  if (!res.ok) {
+    // throw error from response
+    throw new Error(json)
+  }
+
+  return json
+}

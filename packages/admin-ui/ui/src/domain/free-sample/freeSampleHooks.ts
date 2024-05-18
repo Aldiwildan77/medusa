@@ -11,6 +11,8 @@ import {
   getFreeSampleList,
   GetFreeSampleListPayload,
   GetFreeSampleListResponse,
+  rejectFreeSample,
+  RejectFreeSamplePayload,
   saveFreeSampleTrackingNumber,
   SaveFreeSampleTrackingNumberPayload,
 } from "../../services/freeSample"
@@ -48,4 +50,10 @@ export const useSaveFreeSampleTrackingNumber = (
     async (payload) => saveFreeSampleTrackingNumber(payload),
     options
   )
+}
+
+export const useRejectFreeSample = (
+  options?: UseMutationOptions<null, unknown, RejectFreeSamplePayload>
+) => {
+  return useMutation(async (payload) => rejectFreeSample(payload), options)
 }

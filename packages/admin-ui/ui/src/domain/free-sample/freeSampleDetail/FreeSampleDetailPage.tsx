@@ -16,15 +16,15 @@ import useNotification from "../../../hooks/use-notification"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import PackageIcon from "../../../components/fundamentals/icons/package-icon"
 import { ItemsList } from "./ItemsList"
-import { useGetFreeSampleDetail } from "../freeSampleHooks"
+import { useGetFreeSampleDetail, useRejectFreeSample } from "../freeSampleHooks"
 import dayjs from "dayjs"
 import { XMark } from "@medusajs/icons"
 import { ShipFreeSampleModal } from "./ShipFreeSampleModal"
 import { FreeSampleStatus } from "./FreeSampleStatus"
 import { FormattedAddress } from "../../orders/details/templates"
 import { Address } from "@medusajs/medusa"
-import Button from "../../../components/fundamentals/button"
 import { TRACKING_CODE_SPLITTER } from "../freeSampleUtils"
+import { Button, usePrompt } from "@medusajs/ui"
 
 export const FreeSampleDetailPage = () => {
   const { id } = useParams()
@@ -32,6 +32,8 @@ export const FreeSampleDetailPage = () => {
 
   const [showFulfillmentShipment, setShowFulfillmentShipment] = useState(false)
 
+  const prompt = usePrompt()
+  const rejectFreeSample = useRejectFreeSample()
   const { data, isFetching, refetch } = useGetFreeSampleDetail(
     {
       serial: id || "",
@@ -100,6 +102,46 @@ export const FreeSampleDetailPage = () => {
     alert("Tracking number copied to clipboard")
   }
 
+  const handleReject = async () => {
+    const promtRes = await prompt({
+      title: "Reject Free Sample",
+      description: "Are you sure you want to reject this free sample?",
+      confirmText: "Reject",
+      cancelText: "Cancel",
+    })
+
+    if (!promtRes) {
+      return
+    }
+
+    rejectFreeSample.mutate(
+      {
+        transactionSerial: data?.serial,
+      },
+      {
+        onSuccess: () => {
+          notification(
+            t("details-success", "Success"),
+            t("details-free-sample-rejected", "Free sample rejected"),
+            "success"
+          )
+
+          refetch()
+        },
+        onError: () => {
+          notification(
+            t("details-error", "Error"),
+            t(
+              "details-error-rejecting-free-sample",
+              "Error rejecting free sample"
+            ),
+            "error"
+          )
+        },
+      }
+    )
+  }
+
   type CountryCode = keyof typeof isoAlpha2Countries
   const countryCode = (data?.shipping?.country_code?.toUpperCase() ||
     "") as CountryCode
@@ -158,20 +200,18 @@ export const FreeSampleDetailPage = () => {
           compact={true}
           className={"h-auto min-h-0 w-full"}
           title={"Shipment"}
-          status={
-            data?.status !== "SHIPPED" ? "Waiting for shipment" : "Shipped"
-          }
         >
           <div className="inter-small-regular">
             {data?.status === "REQUESTED" && (
               <div className="flex w-full justify-end">
                 <div className="flex flex-row gap-2">
                   <Button
-                    variant="secondary"
+                    variant="danger"
                     size="small"
                     type="button"
                     className="flex items-center"
-                    onClick={() => console.log("Decline Request")}
+                    onClick={handleReject}
+                    isLoading={rejectFreeSample.isLoading}
                   >
                     <div className="gap-x-2xsmall flex items-center">
                       <XMark width={20} height={20} />
@@ -215,23 +255,13 @@ export const FreeSampleDetailPage = () => {
                     {dayjs(courierShippedAt).format("D MMMM YYYY HH:mm") || "-"}
                   </div>
                 </div>
-
-                {/* <div className="flex flex-col space-y-1 py-4">
-                  <div className="text-grey-50 flex">
-                    {data?.tracking_code
-                      ? dayjs(courierShippedAt).format("D MMMM YYYY HH:mm")
-                      : "Not Shipped"}
-                    {data?.tracking_code ? (
-                      <span
-                        className="text-blue-60 ml-2 inline-flex cursor-pointer flex-row items-center gap-1 font-semibold"
-                        onClick={handleCopyTrackingNumber}
-                      >
-                        {courierName} {courierTrackingNumber}{" "}
-                        <ClipboardCopyIcon />
-                      </span>
-                    ) : null}
-                  </div>
-                </div> */}
+              </div>
+            )}
+            {data?.status === "REJECTED" && (
+              <div className="flex w-full">
+                <div className="text-lg">
+                  - <span className="text-red-700">(Rejected)</span>
+                </div>
               </div>
             )}
           </div>
