@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
 import type { Row } from "react-table"
@@ -14,6 +14,7 @@ import { PricedProduct } from "@medusajs/client-types"
 import { useAffiliateProductTargetProductModalFilters } from "./useAffiliateProductTargetProductModalFilters"
 import { Button } from "@medusajs/ui"
 import Modal from "../../../../../components/molecules/modal"
+import { debounce } from "lodash"
 
 const LIMIT = 10
 
@@ -29,20 +30,21 @@ export const AffiliateProductTargetProductModal = (props: Props) => {
     NonNullable<TargettedCampaignFormType["productTargets"]>
   >(props.selectedProducts)
 
-  const { paginate, filters } = useAffiliateProductTargetProductModalFilters({
-    defaultSearch: location.search,
-    limit: LIMIT,
-    page: 1,
-  })
+  const { paginate, filters, setQuery } =
+    useAffiliateProductTargetProductModalFilters({
+      defaultSearch: location.search,
+      limit: LIMIT,
+      page: 1,
+    })
 
-  // TODO: add filter
-  // const [search, setSearch] = useState()
+  const [search, setSearch] = useState("")
   const [numPages, setNumPages] = useState(0)
 
   const { products, isLoading, count } = useAdminProducts(
     {
       limit: filters.limit,
       offset: filters.page - 1,
+      q: filters.query,
     },
     {
       onSuccess: (data) => {
@@ -50,6 +52,18 @@ export const AffiliateProductTargetProductModal = (props: Props) => {
       },
     }
   )
+
+  const debouncedSearch = useCallback(
+    debounce((search: string) => {
+      setQuery(search)
+      console.log("search", search)
+    }, 500),
+    []
+  )
+
+  useEffect(() => {
+    debouncedSearch(search)
+  }, [debouncedSearch, search])
 
   const [columns] = useAffiliateProductTargetProductModalColumn({
     selectedProducts,
@@ -153,7 +167,12 @@ export const AffiliateProductTargetProductModal = (props: Props) => {
               }}
               isLoading={isLoading}
             >
-              <Table {...getTableProps()}>
+              <Table
+                enableSearch
+                searchValue={search}
+                handleSearch={setSearch}
+                {...getTableProps()}
+              >
                 <Table.Head>
                   {headerGroups?.map((headerGroup, idx) => (
                     <Table.HeadRow

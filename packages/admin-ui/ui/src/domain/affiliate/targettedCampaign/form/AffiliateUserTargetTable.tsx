@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
 import type { Row } from "react-table"
@@ -12,6 +12,7 @@ import { useGetAffiliatorList } from "../../affiliateHooks"
 import { Affiliator } from "../../../../types/affiliate"
 import BodyCard from "../../../../components/organisms/body-card"
 import { FieldErrors, UseFormSetValue } from "react-hook-form"
+import { debounce } from "lodash"
 import { TargettedCampaignFormType } from "./targettedCampaignSchema"
 
 const LIMIT = 10
@@ -27,20 +28,21 @@ export const AffiliateUserTargetTable = (props: Props) => {
   const [selectedAffiliatorCustomerIds, setSelectedAffiliatorCustomerIds] =
     useState<string[]>(props.values.customerIds || [])
 
-  const { paginate, filters } = useTargettedCampaignFilters({
+  const { paginate, filters, setQuery } = useTargettedCampaignFilters({
     defaultSearch: location.search,
     limit: LIMIT,
     page: 1,
   })
 
   // TODO: add filter
-  // const [search, setSearch] = useState()
+  const [search, setSearch] = useState("")
   const [numPages, setNumPages] = useState(0)
 
   const getAffiliator = useGetAffiliatorList(
     {
       limit: filters.limit,
       page: filters.page,
+      search: filters.query,
     },
     {
       onSuccess: (data) => {
@@ -48,6 +50,18 @@ export const AffiliateUserTargetTable = (props: Props) => {
       },
     }
   )
+
+  const debouncedSearch = useCallback(
+    debounce((search: string) => {
+      setQuery(search)
+      console.log("search", search)
+    }, 500),
+    []
+  )
+
+  useEffect(() => {
+    debouncedSearch(search)
+  }, [debouncedSearch, search])
 
   useEffect(() => {
     props.setValue("customerIds", selectedAffiliatorCustomerIds)
@@ -158,9 +172,9 @@ export const AffiliateUserTargetTable = (props: Props) => {
           isLoading={getAffiliator.isFetching}
         >
           <Table
-            // enableSearch
-            // searchValue={search}
-            // handleSearch={setSearch}
+            enableSearch
+            searchValue={search}
+            handleSearch={setSearch}
             {...getTableProps()}
           >
             <Table.Head>

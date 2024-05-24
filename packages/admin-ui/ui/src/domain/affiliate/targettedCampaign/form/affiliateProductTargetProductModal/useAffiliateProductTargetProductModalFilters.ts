@@ -1,13 +1,13 @@
 import { useReducer } from "react"
 
 type ProductFilterAction =
-  | { type: "setQuery"; payload: string | null }
+  | { type: "setQuery"; payload: string }
   | { type: "reset"; payload: ProductFilterState }
   | { type: "setPage"; payload: number }
   | { type: "setLimit"; payload: number }
 
 interface ProductFilterState {
-  query?: string | null
+  query?: string
   limit: number
   page: number
 }
@@ -20,7 +20,7 @@ const reducer = (
     case "setQuery": {
       return {
         ...state,
-        page: 0, // reset page when query changes
+        page: 1, // reset page when query changes
         query: action.payload,
       }
     }
@@ -59,7 +59,7 @@ export const useAffiliateProductTargetProductModalFilters = (
   }
 
   const [state, dispatch] = useReducer(reducer, {
-    query: params.defaultSearch || null,
+    query: params.defaultSearch || "",
     limit: params.limit || 10,
     page: params.page || 1,
   })
@@ -79,6 +79,10 @@ export const useAffiliateProductTargetProductModalFilters = (
     }
   }
 
+  const setQuery = (query: string) => {
+    dispatch({ type: "setQuery", payload: query })
+  }
+
   return {
     ...state,
     filters: {
@@ -86,5 +90,6 @@ export const useAffiliateProductTargetProductModalFilters = (
     },
     paginate,
     setLimit,
+    setQuery,
   }
 }
