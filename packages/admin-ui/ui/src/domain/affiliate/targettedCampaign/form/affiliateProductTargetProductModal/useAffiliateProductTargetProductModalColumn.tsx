@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { Column } from "react-table"
 import { PricedProduct, PricedVariant } from "@medusajs/client-types"
 import { TargettedCampaignFormType } from "../targettedCampaignSchema"
+import { formatAmountWithSymbol } from "../../../../../utils/prices"
 
 type Params = {
   selectedProducts: TargettedCampaignFormType["productTargets"]
@@ -93,11 +94,13 @@ export const useAffiliateProductTargetProductModalColumn = (params: Params) => {
       {
         Header: "Price(Rp)",
         accessor: "variants",
-        width: 100,
+        width: 200,
         Cell: ({ row: { original } }) => {
-          const prices = original.variants?.map(
-            (variant: PricedVariant) => variant?.calculated_price || 0
-          )
+          const prices = original.variants?.map((variant: PricedVariant) => {
+            // get the price that doesn't have price_list_id (it means it's the default price)
+            return variant.prices?.find((p) => !p.price_list_id)?.amount || 0
+          })
+
           // from small to big
           const sortedPrices =
             prices
@@ -106,13 +109,19 @@ export const useAffiliateProductTargetProductModalColumn = (params: Params) => {
               .filter((price, index, self) => self.indexOf(price) === index) ||
             []
 
-          const smallestPrice = sortedPrices[0]
+          const smallestPrice = formatAmountWithSymbol({
+            amount: sortedPrices?.[0] || 0,
+            currency: "IDR",
+          })
 
           if (sortedPrices.length === 1) {
             return smallestPrice
           }
 
-          const largestPrice = sortedPrices[sortedPrices.length - 1]
+          const largestPrice = formatAmountWithSymbol({
+            amount: sortedPrices[sortedPrices.length - 1],
+            currency: "IDR",
+          })
 
           return `${smallestPrice} - ${largestPrice}`
         },
