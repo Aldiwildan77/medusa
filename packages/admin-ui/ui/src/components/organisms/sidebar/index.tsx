@@ -19,6 +19,7 @@ import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
+import ChannelsIcon from "../../fundamentals/icons/channels-icon"
 
 const ICON_SIZE = 20
 
@@ -120,6 +121,12 @@ const Sidebar: React.FC = () => {
             icon={<ArchiveBox />}
             triggerHandler={triggerHandler}
             text={"Free Sample"}
+          />
+          <SidebarMenuItem
+            pageLink={"/a/pricing-group"}
+            icon={<ChannelsIcon size={ICON_SIZE} />}
+            triggerHandler={triggerHandler}
+            text="Add-on Deals"
           />
           {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
