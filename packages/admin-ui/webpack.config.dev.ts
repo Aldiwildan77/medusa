@@ -16,6 +16,8 @@ const getDevServerConfig = () => {
     env: "development",
     options: {
       backend: "http://localhost:9000",
+      // backend: "https://kilap-ecommerce-api.chroma-gaming.xyz",
+      // backend: "https://api-shop.kilapglobal.id",
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),

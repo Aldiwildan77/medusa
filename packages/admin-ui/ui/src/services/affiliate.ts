@@ -155,7 +155,7 @@ export const getListAffiliator = async (
   const url = new URL(`${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/affiliators`)
 
   if (payload.search) {
-    url.searchParams.append("search", payload.search)
+    url.searchParams.append("q", payload.search)
   }
 
   if (payload.orderBy) {
