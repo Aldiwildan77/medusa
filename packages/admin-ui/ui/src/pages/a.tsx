@@ -26,6 +26,7 @@ import { useRoutes } from "../providers/route-provider"
 import { isRoute } from "../utils/extensions"
 import { AnalyticsPage } from "./analytics"
 import { FreeSampleRoutes } from "../domain/free-sample/FreeSampleRoutes"
+import { AddOnDealRoutes } from "../domain/addOnDeal/AddOnDealRoutes"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -69,6 +70,7 @@ const DashboardRoutes = () => {
           <Route path="analytics/*" element={<AnalyticsPage />} />
           <Route path="affiliate/*" element={<AffiliateRoutes />} />
           <Route path="free-sample/*" element={<FreeSampleRoutes />} />
+          <Route path="pricing-groups/*" element={<AddOnDealRoutes />} />
           {injectedRoutes.map((route, index) => {
             return (
               <Route

@@ -19,6 +19,7 @@ import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
+import ChannelsIcon from "../../fundamentals/icons/channels-icon"
 
 const ICON_SIZE = 20
 
@@ -132,6 +133,12 @@ const Sidebar: React.FC = () => {
             icon={<CashIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-pricing", "Pricing")}
+          />
+          <SidebarMenuItem
+            pageLink={"/a/pricing-groups"}
+            icon={<ChannelsIcon size={ICON_SIZE} />}
+            triggerHandler={triggerHandler}
+            text="Pricing Groups"
           />
           {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
