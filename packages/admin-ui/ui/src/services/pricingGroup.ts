@@ -80,3 +80,16 @@ export const getPricingGroups = async (
 
   return res.data
 }
+
+export type DeletePricingGroupPayload = {
+  id: string
+}
+
+export const deletePricingGroup = async (
+  payload: DeletePricingGroupPayload
+): Promise<null> => {
+  const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/${payload.id}`
+
+  const res = await medusaRequest("DELETE", url, payload)
+  return res.data
+}

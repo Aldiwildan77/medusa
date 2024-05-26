@@ -4,7 +4,8 @@ import { PricingGroupListData } from "../../../types/pricingGroup"
 import { Button } from "@medusajs/ui"
 
 type Params = {
-  onDelete: (id: string) => void
+  onDelete: ({ id, index }: { id: string; index: number }) => void
+  indexDeleting?: number
 }
 
 export const usePricingGroupColumn = (params: Params) => {
@@ -25,7 +26,9 @@ export const usePricingGroupColumn = (params: Params) => {
       {
         Header: "Is Active?",
         accessor: "is_active",
-        Cell: ({ cell: { value } }) => (value ? "Yes" : "No"),
+        Cell: ({ cell: { value } }) => {
+          return <p>{value ? "Yes" : "No"}</p>
+        },
       },
       {
         Header: "Main Products",
@@ -51,12 +54,19 @@ export const usePricingGroupColumn = (params: Params) => {
       {
         Header: "Action",
         accessor: "id",
-        Cell: ({ cell: { value } }) => {
+        Cell: ({ cell: { value }, row: { index } }) => {
           return (
             <Button
               variant="danger"
               size="base"
-              onClick={() => params.onDelete(value)}
+              onClick={(e) => {
+                e.stopPropagation()
+                params.onDelete({
+                  id: value,
+                  index,
+                })
+              }}
+              isLoading={params.indexDeleting === index}
             >
               Delete
             </Button>
@@ -64,7 +74,8 @@ export const usePricingGroupColumn = (params: Params) => {
         },
       },
     ],
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [params.indexDeleting]
   )
 
   return [columns] as const

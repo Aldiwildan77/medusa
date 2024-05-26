@@ -8,7 +8,10 @@ import Table, {
 import TableContainer from "../../../components/organisms/table-container"
 import { usePricingGroupFilters } from "./usePricingGroupFilters"
 import { usePricingGroupColumn } from "./usePricingGroupColumn"
-import { useGetPricingGroups } from "../pricingGroupHooks"
+import {
+  useDeletePricingGroup,
+  useGetPricingGroups,
+} from "../pricingGroupHooks"
 import BodyCard from "../../../components/organisms/body-card"
 import { debounce } from "lodash"
 import { PricingGroupListData } from "../../../types/pricingGroup"
@@ -27,6 +30,7 @@ export const PricingGroupTable = () => {
 
   const [search, setSearch] = useState("")
   const [numPages, setNumPages] = useState(0)
+  const [deleteIndex, setDeleteIndex] = useState(-1)
 
   const getPricingGroup = useGetPricingGroups(
     {
@@ -40,6 +44,7 @@ export const PricingGroupTable = () => {
       },
     }
   )
+  const deleteMutation = useDeletePricingGroup()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
@@ -54,8 +59,18 @@ export const PricingGroupTable = () => {
   }, [debouncedSearch, search])
 
   const [columns] = usePricingGroupColumn({
-    onDelete: (id) => {
-      console.log("delete", id)
+    indexDeleting: deleteIndex,
+    onDelete: async ({ id, index }) => {
+      setDeleteIndex(index)
+      try {
+        await deleteMutation.mutateAsync({
+          id,
+        })
+        getPricingGroup.refetch()
+      } catch (error) {
+        console.error(error)
+      }
+      setDeleteIndex(-1)
     },
   })
 

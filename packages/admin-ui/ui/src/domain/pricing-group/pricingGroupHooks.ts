@@ -11,6 +11,8 @@ import {
   createPricingGroup,
   CreatePricingGroupPayload,
   CreatePricingGroupResponse,
+  deletePricingGroup,
+  DeletePricingGroupPayload,
   getPricingGroups,
   GetPricingGroupsPayload,
   GetPricingGroupsResponse,
@@ -46,4 +48,10 @@ export const useGetPricingGroups = (
     queryFn: async () => getPricingGroups(payload),
     ...options,
   })
+}
+
+export const useDeletePricingGroup = (
+  options?: UseMutationOptions<null, unknown, DeletePricingGroupPayload>
+) => {
+  return useMutation(async (payload) => deletePricingGroup(payload), options)
 }
