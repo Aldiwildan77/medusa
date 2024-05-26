@@ -11,6 +11,9 @@ import {
   createPricingGroup,
   CreatePricingGroupPayload,
   CreatePricingGroupResponse,
+  getPricingGroups,
+  GetPricingGroupsPayload,
+  GetPricingGroupsResponse,
 } from "../../services/pricingGroup"
 
 export const useCreatePricingGroup = (
@@ -30,6 +33,17 @@ export const useCheckMainProducts = (
   return useQuery({
     queryKey: ["checkMainProducts", JSON.stringify(payload)],
     queryFn: async () => checkMainProducts(payload),
+    ...options,
+  })
+}
+
+export const useGetPricingGroups = (
+  payload: GetPricingGroupsPayload,
+  options?: UseQueryOptions<GetPricingGroupsResponse>
+) => {
+  return useQuery({
+    queryKey: ["getPricingGroups", JSON.stringify(payload)],
+    queryFn: async () => getPricingGroups(payload),
     ...options,
   })
 }

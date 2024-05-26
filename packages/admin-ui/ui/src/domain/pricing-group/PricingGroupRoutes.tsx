@@ -1,14 +1,11 @@
 import { Route, Routes } from "react-router-dom"
-// import { AffiliateIndex } from "./pages/IndexPage"
 import { PricingGroupCreatePage } from "./pages/PricingGroupCreatePage"
-// import { TargettedCampaignEditPage } from "./pages/TargettedCampaignEditPage"
-// import { AffiliateAnalyticsPage } from "./pages/AffiliateAnalyticsPage"
+import { PricingGroupIndex } from "./pages/IndexPage"
 
 export const PricingGroupRoutes = () => {
   return (
     <Routes>
-      {/* <Route index element={<AffiliateIndex />} /> */}
-      {/* <Route path="/analytics" element={<AffiliateAnalyticsPage />} /> */}
+      <Route index element={<PricingGroupIndex />} />
       <Route path="/create" element={<PricingGroupCreatePage />} />
       {/* <Route
         path="/targetted-campaign/:id"

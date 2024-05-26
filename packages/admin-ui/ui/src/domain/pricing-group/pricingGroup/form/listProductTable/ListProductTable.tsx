@@ -91,8 +91,6 @@ export const ListProductTable = (props: Props) => {
     mainProductChecks.data,
   ])
 
-  console.log("disabledProductIds", disabledProductIds)
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((search: string) => {
@@ -101,16 +99,16 @@ export const ListProductTable = (props: Props) => {
     []
   )
 
+  useEffect(() => {
+    debouncedSearch(search)
+  }, [debouncedSearch, search])
+
   const groupedSelectedProductByProductId = useMemo(() => {
     return selectedProducts.filter(
       (product, index, self) =>
         index === self.findIndex((p) => p.productId === product.productId)
     )
   }, [selectedProducts])
-
-  useEffect(() => {
-    debouncedSearch(search)
-  }, [debouncedSearch, search])
 
   const [columns] = useListProductTableColumn({
     disabledProductIds,
@@ -192,7 +190,6 @@ export const ListProductTable = (props: Props) => {
               numberOfRows={products?.length || 0}
               hasPagination
               pagingState={{
-                // TODO: fix paging state for label
                 count: count || 0,
                 offset: (filters.page - 1) * filters.limit,
                 pageSize: (filters.page - 1) * filters.limit + rows.length,
