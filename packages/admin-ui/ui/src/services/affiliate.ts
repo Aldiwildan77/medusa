@@ -26,7 +26,6 @@ export const getShopCampaign = async (): Promise<ShopCampaign> => {
     `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/groups?${query.toString()}`
   ).then(async (res) => res.json())
 
-  console.log("res.data", res.data)
   if (res.data.length === 0) {
     await createTargettedCampaign({
       name: "Shop Campaign",
@@ -328,7 +327,6 @@ export const getAffiliatorSummary = async (
   }
 
   const res = await fetch(url.toString()).then(async (res) => res.json())
-  console.log("res", res)
   const data = res.data
   return {
     totalProductSold: data.total_product_sold,
