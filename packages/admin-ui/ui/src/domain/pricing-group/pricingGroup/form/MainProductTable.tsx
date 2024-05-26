@@ -127,6 +127,7 @@ export const MainProductTable = (props: Props) => {
       </BodyCard>
       {isProductModalShown && (
         <ListProductTable
+          enableMainProductCheck={true}
           onClose={closeProductModal}
           onSubmit={(products) => {
             props.setValue(

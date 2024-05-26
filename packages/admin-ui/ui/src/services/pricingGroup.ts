@@ -34,16 +34,14 @@ export const createPricingGroup = async (
 }
 
 export type CheckMainProductsPayload = {
-  name: string
-  limit_purchase_quantity: number
-  products: CreatePricingGroupPayloadProduct[]
+  product_ids: string[]
 }
 
 export type CheckMainProductsResponse = Record<string, boolean>
 
 export const checkMainProducts = async (
-  payload: CreatePricingGroupPayload
-): Promise<CreatePricingGroupResponse> => {
+  payload: CheckMainProductsPayload
+): Promise<CheckMainProductsResponse> => {
   const url = `${MEDUSA_BACKEND_URL}${AFFILIATE_BASE_URL}/products/check`
   const res = await medusaRequest("POST", url, payload)
 

@@ -83,7 +83,7 @@ export const useAddOnProductTableColumn = (params: Params) => {
         },
       },
       {
-        Header: "Add-on Price",
+        Header: "Purchase Limit",
         accessor: "maxQuantity",
         Cell: ({ row: { original, index } }) => {
           return (

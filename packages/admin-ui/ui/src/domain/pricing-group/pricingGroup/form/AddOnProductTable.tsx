@@ -30,13 +30,21 @@ export const AddOnProductTable = (props: Props) => {
     data: products,
     errors: props.errors,
     onChangePrice: ({ variantId, price }) => {
-      console.log("variantId", variantId)
-      console.log("price", price)
-      console.log("products", props.values?.addOnProducts)
       const newData =
         props.values?.addOnProducts?.map((product) => {
           if (product.productVariantId === variantId) {
             return { ...product, discountedPrice: price }
+          }
+          return product
+        }) || []
+
+      props.setValue("addOnProducts", newData)
+    },
+    onChangeMaxQty: ({ variantId, qty }) => {
+      const newData =
+        props.values?.addOnProducts?.map((product) => {
+          if (product.productVariantId === variantId) {
+            return { ...product, maxQuantity: qty }
           }
           return product
         }) || []

@@ -183,7 +183,7 @@ export const useListProductTableColumn = (params: Params) => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [params.selectedProducts]
+    [params.selectedProducts, params.disabledProductIds]
   )
 
   return [columns] as const

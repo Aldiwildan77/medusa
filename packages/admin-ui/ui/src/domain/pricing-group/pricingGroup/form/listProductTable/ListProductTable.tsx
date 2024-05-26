@@ -15,10 +15,13 @@ import { useListProductTableFilters } from "./useListProductTableFilters"
 import { Button } from "@medusajs/ui"
 import Modal from "../../../../../components/molecules/modal"
 import { debounce } from "lodash"
+import { useCheckMainProducts } from "../../../pricingGroupHooks"
+import { isDefined } from "../../../../../utils/is-defined"
 
 const LIMIT = 10
 
 type Props = {
+  enableMainProductCheck?: boolean
   disabledProductIds?: string[]
   selectedProducts: NonNullable<PricingGroupFormType["addOnProducts"]>
   onSubmit: (products: PricingGroupFormType["addOnProducts"]) => void
@@ -53,6 +56,43 @@ export const ListProductTable = (props: Props) => {
     }
   )
 
+  const mainProductChecks = useCheckMainProducts(
+    {
+      product_ids:
+        products?.map((product) => product.id).filter(isDefined) || [],
+    },
+    {
+      enabled: props.enableMainProductCheck && !!products,
+    }
+  )
+
+  const disabledProductIds = useMemo(() => {
+    const disabledProductIds: string[] = []
+    console.log("mainProductChecks", mainProductChecks.data)
+    if (props.enableMainProductCheck && mainProductChecks.data) {
+      const res = Object.entries(mainProductChecks.data).reduce<string[]>(
+        (acc, [productId, isMain]) => {
+          if (isMain) {
+            acc.push(productId)
+          }
+          return acc
+        },
+        []
+      )
+      disabledProductIds.push(...res)
+    }
+
+    disabledProductIds.push(...(props.disabledProductIds || []))
+
+    return disabledProductIds
+  }, [
+    props.enableMainProductCheck,
+    props.disabledProductIds,
+    mainProductChecks.data,
+  ])
+
+  console.log("disabledProductIds", disabledProductIds)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((search: string) => {
@@ -73,7 +113,7 @@ export const ListProductTable = (props: Props) => {
   }, [debouncedSearch, search])
 
   const [columns] = useListProductTableColumn({
-    disabledProductIds: props.disabledProductIds,
+    disabledProductIds,
     selectedProducts,
     onSelectProducts: (checked, products) => {
       if (checked) {
