@@ -32,7 +32,11 @@ export function PricingGroupForm(props: Props) {
   console.log("values", values)
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
+    <form
+      onSubmit={handleSubmit(props.onSubmit, (err) => {
+        console.log("[handleSubmit] Error: ", err)
+      })}
+    >
       <div className="gap-y-xsmall flex h-full grow flex-col">
         <div className="flex flex-col gap-4">
           <BasicInformation

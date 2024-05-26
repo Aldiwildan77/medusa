@@ -9,6 +9,7 @@ type Params = {
   data: PricingGroupFormType["addOnProducts"]
   errors: Partial<FieldErrors<PricingGroupFormType>>
   onChangePrice: (data: { variantId: string; price: number }) => void
+  onChangeMaxQty: (data: { variantId: string; qty: number }) => void
   onDelete: (variantId: string) => void
 }
 
@@ -82,6 +83,24 @@ export const useAddOnProductTableColumn = (params: Params) => {
         },
       },
       {
+        Header: "Add-on Price",
+        accessor: "maxQuantity",
+        Cell: ({ row: { original, index } }) => {
+          return (
+            <PurchaseLimitInput
+              error={params.errors.addOnProducts?.[index]?.maxQuantity?.message}
+              value={original.maxQuantity}
+              onChange={(qty) =>
+                params.onChangeMaxQty({
+                  variantId: original.productVariantId,
+                  qty,
+                })
+              }
+            />
+          )
+        },
+      },
+      {
         Header: "Action",
         accessor: "productVariantId",
         Cell: ({ cell: { value }, row: { index } }) => {
@@ -121,7 +140,6 @@ type PriceInputProps = {
 }
 
 function PriceInput(props: PriceInputProps) {
-  console.log("rerender")
   return (
     <div className="flex flex-col">
       <div
@@ -139,7 +157,7 @@ function PriceInput(props: PriceInputProps) {
           Rp
         </div>
         <input
-          name="name"
+          name="discountedPrice"
           type="number"
           className="block w-full rounded-r-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           placeholder="0.5 - 80"
@@ -148,6 +166,31 @@ function PriceInput(props: PriceInputProps) {
           onChange={(e) => props.onChange(Number(e.target.value))}
         />
       </div>
+      {props?.error && (
+        <span className="col-span-2 text-sm  text-red-700">{props?.error}</span>
+      )}
+    </div>
+  )
+}
+
+type PurchaseLimitInputProps = {
+  value: number
+  onChange: (price: number) => void
+  error?: string
+}
+
+function PurchaseLimitInput(props: PurchaseLimitInputProps) {
+  return (
+    <div className="flex flex-col">
+      <input
+        name="maxQuantity"
+        type="number"
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        placeholder="0.5 - 80"
+        required
+        value={props.value}
+        onChange={(e) => props.onChange(Number(e.target.value))}
+      />
       {props?.error && (
         <span className="col-span-2 text-sm  text-red-700">{props?.error}</span>
       )}

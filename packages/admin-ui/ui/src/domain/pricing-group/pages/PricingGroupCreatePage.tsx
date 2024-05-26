@@ -1,48 +1,45 @@
 import { PricingGroupFormType } from "../pricingGroup/form/pricingGroupSchema"
-import { useAdminCreateTargettedCampaign } from "../affiliateHooks"
+import { useCreatePricingGroup } from "../pricingGroupHooks"
 import { useNavigate } from "react-router-dom"
 import { PricingGroupForm } from "../pricingGroup/PricingGroupForm"
 
 export function PricingGroupCreatePage() {
   const navigate = useNavigate()
 
-  const createCampaignMachine = useAdminCreateTargettedCampaign({
+  const createMachine = useCreatePricingGroup({
     onSuccess: (data) => {
-      navigate(`/a/affiliate/campaigns/${data.data.serial}`)
+      navigate(`/a/pricing-group/${data.id}`)
     },
   })
 
   // TODO: change this handler
   const handleSubmit = (data: PricingGroupFormType) => {
-    console.log("data", data)
-    // createCampaignMachine.mutate({
-    //   name: data.name,
-    //   started_at: data.startTime,
-    //   ended_at: data.showEndTime && data.endTime ? data.endTime : null,
-    //   user_target_type: "SPECIFIC",
-    //   product_target_type: data.productTargetType,
-    //   user_targets: data.customerIds,
-    //   product_targets:
-    //     data.productTargetType === "ALL"
-    //       ? [
-    //           {
-    //             amount: data.productTargetSingleCommissionRate || 0,
-    //             reference: "ALL",
-    //             type: "PERCENTAGE",
-    //           },
-    //         ]
-    //       : data.productTargets?.map((t) => ({
-    //           amount: t.commisionRate,
-    //           reference: t.productId,
-    //           type: "PERCENTAGE",
-    //         })) || [],
-    // })
+    createMachine.mutate({
+      name: data.name,
+      limit_purchase_quantity: data.limitPurchase,
+      products: [
+        ...data.mainProducts.map((product) => ({
+          product_id: product.productId,
+          product_variant_id: product.productVariantId,
+          price: 0,
+          max_quantity: 0,
+          is_main: true,
+        })),
+        ...data.addOnProducts.map((product) => ({
+          product_id: product.productId,
+          product_variant_id: product.productVariantId,
+          price: product.discountedPrice,
+          max_quantity: product.maxQuantity,
+          is_main: false,
+        })),
+      ],
+    })
   }
 
   return (
     <PricingGroupForm
       onSubmit={handleSubmit}
-      isLoadingSubmit={createCampaignMachine.isLoading}
+      isLoadingSubmit={createMachine.isLoading}
     />
   )
 }
