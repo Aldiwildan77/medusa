@@ -15,6 +15,7 @@ import {
 import BodyCard from "../../../components/organisms/body-card"
 import { debounce } from "lodash"
 import { PricingGroupListData } from "../../../types/pricingGroup"
+import { queryClient } from "../../../constants/query-client"
 
 const LIMIT = 10
 
@@ -67,6 +68,10 @@ export const PricingGroupTable = () => {
           id,
         })
         getPricingGroup.refetch()
+        // invalidate react-query cache of "checkMainProducts"
+        queryClient.invalidateQueries({
+          queryKey: ["checkMainProducts"],
+        })
       } catch (error) {
         console.error(error)
       }
