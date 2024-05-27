@@ -35,7 +35,17 @@ export const MainProductTable = (props: Props) => {
       if (!acc[product.productId]) {
         acc[product.productId] = product
       } else if (acc[product.productId].originalPrice > product.originalPrice) {
-        acc[product.productId] = product
+        acc[product.productId] = {
+          ...product,
+          // sum stock if product already exist
+          stock: acc[product.productId].stock + product.stock,
+        }
+      } else {
+        acc[product.productId] = {
+          ...acc[product.productId],
+          // sum stock if product already exist
+          stock: acc[product.productId].stock + product.stock,
+        }
       }
       return acc
     }, {} as Record<string, PricingGroupFormType["mainProducts"][0]>)
@@ -49,8 +59,6 @@ export const MainProductTable = (props: Props) => {
   const [columns] = useMainProductTableColumn({
     data: groupedProducts,
     onDelete: (productId) => {
-      console.log("productId", productId)
-      console.log("mainProducts", props.values?.mainProducts)
       const newData =
         props.values?.mainProducts?.filter(
           (product) => product.productId !== productId
@@ -81,7 +89,7 @@ export const MainProductTable = (props: Props) => {
             </span>
           )}
           <div className="flex flex-row items-center justify-between">
-            <p>{props.values.mainProducts?.length || "0"} product(s)</p>
+            <p>{groupedProducts?.length || "0"} product(s)</p>
             <Button
               type="button"
               variant="secondary"
@@ -91,7 +99,7 @@ export const MainProductTable = (props: Props) => {
             </Button>
           </div>
           <TableContainer
-            numberOfRows={props.values?.mainProducts?.length || 0}
+            numberOfRows={groupedProducts?.length || 0}
             hasPagination={false}
           >
             <Table {...getTableProps()}>
