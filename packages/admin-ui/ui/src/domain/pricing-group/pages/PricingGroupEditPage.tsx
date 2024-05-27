@@ -147,8 +147,6 @@ export function PricingGroupEditPage() {
     }, [] as PricingGroupFormType["addOnProducts"])
   }, [data])
 
-  console.log("addOnProducts", addOnProducts)
-
   if (isFetching || !data) {
     return (
       <div className="flex w-full items-center justify-center">
