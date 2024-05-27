@@ -63,8 +63,17 @@ export const MainProductTable = (props: Props) => {
         props.values?.mainProducts?.filter(
           (product) => product.productId !== productId
         ) || []
+      const deletedProducts: PricingGroupFormType["deletedProducts"] =
+        props.values?.mainProducts
+          ?.filter((product) => product.productId === productId)
+          .map((product) => ({
+            isMain: true,
+            productId: product.productId,
+            productVariantId: product.productVariantId,
+          })) || []
 
       props.setValue("mainProducts", newData)
+      props.setValue("deletedProducts", deletedProducts)
     },
   })
 
@@ -136,6 +145,12 @@ export const MainProductTable = (props: Props) => {
       {isProductModalShown && (
         <ListProductTable
           enableMainProductCheck={true}
+          currentMainProductIds={[
+            ...(props.values?.mainProducts?.map((p) => p.productId) || []),
+            ...(props.values?.deletedProducts
+              ?.filter((p) => p.isMain)
+              ?.map((p) => p.productId) || []),
+          ]}
           onClose={closeProductModal}
           onSubmit={(products) => {
             props.setValue(

@@ -5,7 +5,7 @@ export const pricingGroupFormSchema = z.object({
   limitPurchase: z.number().min(1, {
     message: "Limit purchase is required",
   }),
-  // TODO: add status
+  isActive: z.boolean(),
   mainProducts: z
     .array(
       z.object({
@@ -34,6 +34,15 @@ export const pricingGroupFormSchema = z.object({
       })
     )
     .min(1, { message: "At least one product is required" }),
+  deletedProducts: z
+    .array(
+      z.object({
+        productId: z.string(),
+        productVariantId: z.string(),
+        isMain: z.boolean(),
+      })
+    )
+    .optional(),
 })
 
 export type PricingGroupFormType = z.infer<typeof pricingGroupFormSchema>

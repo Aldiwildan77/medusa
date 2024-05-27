@@ -9,7 +9,7 @@ import { PricingGroupFormType } from "./pricingGroupSchema"
 import { Button, useToggleState } from "@medusajs/ui"
 import { ListProductTable } from "./listProductTable/ListProductTable"
 import { useAddOnProductTableColumn } from "./addOnProductHooks"
-import { Column, ColumnWithStrictAccessor } from "react-table"
+import { ColumnWithStrictAccessor } from "react-table"
 
 type Props = {
   errors: Partial<FieldErrors<PricingGroupFormType>>
@@ -56,8 +56,17 @@ export const AddOnProductTable = (props: Props) => {
         props.values?.addOnProducts?.filter(
           (product) => product.productId !== productId
         ) || []
+      const deletedProducts: PricingGroupFormType["deletedProducts"] =
+        props.values?.addOnProducts
+          ?.filter((product) => product.productId === productId)
+          .map((product) => ({
+            isMain: false,
+            productId: product.productId,
+            productVariantId: product.productVariantId,
+          })) || []
 
       props.setValue("addOnProducts", newData)
+      props.setValue("deletedProducts", deletedProducts)
     },
   })
 

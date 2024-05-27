@@ -1,5 +1,6 @@
 import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
 import {
+  PricingGroup,
   PricingGroupListData,
   PricingGroupPagination,
 } from "../types/pricingGroup"
@@ -10,6 +11,7 @@ const BASE_URL = "/admin/pricing-groups"
 export type CreatePricingGroupPayload = {
   name: string
   limit_purchase_quantity: number
+  is_active: boolean
   products: CreatePricingGroupPayloadProduct[]
 }
 
@@ -91,5 +93,79 @@ export const deletePricingGroup = async (
   const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/${payload.id}`
 
   const res = await medusaRequest("DELETE", url, payload)
+  return res.data
+}
+
+export type GetPricingGroupDetailPayload = {
+  id: string
+}
+
+export type GetPricingGroupDetailResponse = PricingGroup
+
+export const getPricingGroupDetail = async (
+  payload: GetPricingGroupDetailPayload
+): Promise<GetPricingGroupDetailResponse> => {
+  const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/${payload.id}`
+
+  const res = await medusaRequest("GET", url, payload)
+
+  return res.data
+}
+
+export type UpdatePricingGroupPayload = {
+  id: string
+  body: {
+    name: string
+    limit_purchase_quantity: number
+    is_active: boolean
+  }
+}
+
+export const updatePricingGroup = async (
+  payload: UpdatePricingGroupPayload
+): Promise<null> => {
+  const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/${payload.id}`
+
+  const res = await medusaRequest("PUT", url, payload.body)
+
+  return res.data
+}
+
+export type UpsertProductPricingGroupPayload = {
+  group_id: string
+  products: {
+    product_id: string
+    product_variant_id: string
+    price: number
+    max_quantity: number
+    is_main: boolean
+  }[]
+}
+
+export const upsertProductPricingGroup = async (
+  payload: UpsertProductPricingGroupPayload
+): Promise<null> => {
+  const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/products/upsert`
+
+  const res = await medusaRequest("POST", url, payload)
+
+  return res.data
+}
+
+export type DeleteProductPricingGroupPayload = {
+  group_id: string
+  products: {
+    product_id: string
+    product_variant_id: string
+  }[]
+}
+
+export const deleteProductPricingGroup = async (
+  payload: DeleteProductPricingGroupPayload
+): Promise<null> => {
+  const url = `${MEDUSA_BACKEND_URL}${BASE_URL}/products/remove`
+
+  const res = await medusaRequest("DELETE", url, payload)
+
   return res.data
 }

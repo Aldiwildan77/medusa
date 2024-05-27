@@ -80,6 +80,31 @@ export function BasicInformation(props: Props) {
             )}
           </div>
         </div>
+        <div className="grid grid-cols-12 gap-2">
+          <label
+            htmlFor="limitPurchase"
+            className="col-span-2 block text-right text-sm font-medium"
+          >
+            Is active?
+          </label>
+          <div className="col-span-8 flex flex-col gap-1">
+            <input
+              name="isActive"
+              checked={props.values.isActive}
+              onChange={(e) => props.setValue("isActive", e.target.checked)}
+              id="checkbox-1"
+              type="checkbox"
+              value=""
+              className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+            />
+
+            {props.errors.isActive && (
+              <span className="col-span-2 text-sm  text-red-700">
+                {props.errors.isActive.message}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </BodyCard>
   )

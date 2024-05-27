@@ -12,11 +12,11 @@ export function PricingGroupCreatePage() {
     },
   })
 
-  // TODO: change this handler
   const handleSubmit = (data: PricingGroupFormType) => {
     createMachine.mutate({
       name: data.name,
       limit_purchase_quantity: data.limitPurchase,
+      is_active: data.isActive,
       products: [
         ...data.mainProducts.map((product) => ({
           product_id: product.productId,

@@ -29,8 +29,6 @@ export function PricingGroupForm(props: Props) {
 
   const values = watch()
 
-  console.log("values", values)
-
   return (
     <form
       onSubmit={handleSubmit(props.onSubmit, (err) => {

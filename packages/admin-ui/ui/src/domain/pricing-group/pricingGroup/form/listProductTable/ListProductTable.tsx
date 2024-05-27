@@ -22,6 +22,7 @@ const LIMIT = 10
 
 type Props = {
   enableMainProductCheck?: boolean
+  currentMainProductIds?: string[]
   disabledProductIds?: string[]
   selectedProducts: NonNullable<PricingGroupFormType["addOnProducts"]>
   onSubmit: (products: PricingGroupFormType["addOnProducts"]) => void
@@ -67,8 +68,8 @@ export const ListProductTable = (props: Props) => {
   )
 
   const disabledProductIds = useMemo(() => {
-    const disabledProductIds: string[] = []
-    console.log("mainProductChecks", mainProductChecks.data)
+    let disabledProductIds: string[] = []
+
     if (props.enableMainProductCheck && mainProductChecks.data) {
       const res = Object.entries(mainProductChecks.data).reduce<string[]>(
         (acc, [productId, isMain]) => {
@@ -84,10 +85,22 @@ export const ListProductTable = (props: Props) => {
 
     disabledProductIds.push(...(props.disabledProductIds || []))
 
+    if (
+      props.currentMainProductIds &&
+      props.currentMainProductIds?.length > 0
+    ) {
+      // filter out disabled product that already exist in main products
+      const currentMainProductIds = props.currentMainProductIds
+      disabledProductIds = disabledProductIds.filter(
+        (productId) => !currentMainProductIds.includes(productId)
+      )
+    }
+
     return disabledProductIds
   }, [
     props.enableMainProductCheck,
     props.disabledProductIds,
+    props.currentMainProductIds,
     mainProductChecks.data,
   ])
 

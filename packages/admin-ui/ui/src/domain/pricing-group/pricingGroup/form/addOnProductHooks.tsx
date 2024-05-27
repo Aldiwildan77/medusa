@@ -102,15 +102,14 @@ export const useAddOnProductTableColumn = (params: Params) => {
       },
       {
         Header: "Action",
-        accessor: "productVariantId",
+        accessor: "productId",
         Cell: ({ cell: { value }, row: { index } }) => {
           // only show delete button for first variant from the same productId
-          const firstVariantIndex = params.data.findIndex(
+          const firstProductIndex = params.data.findIndex(
             (product) => product.productId === value
           )
-
           // if the first variant is not the current variant, return null
-          if (firstVariantIndex !== index) {
+          if (firstProductIndex !== index) {
             return null
           }
 
@@ -142,12 +141,7 @@ type PriceInputProps = {
 function PriceInput(props: PriceInputProps) {
   return (
     <div className="flex flex-col">
-      <div
-        className="relative flex flex-row"
-        style={{
-          paddingRight: "40px",
-        }}
-      >
+      <div className="relative mr-2 flex flex-row">
         <div
           className="inline-flex items-center rounded-l-lg bg-gray-200 px-2 text-sm text-gray-900"
           style={{
@@ -181,7 +175,7 @@ type PurchaseLimitInputProps = {
 
 function PurchaseLimitInput(props: PurchaseLimitInputProps) {
   return (
-    <div className="flex flex-col">
+    <div className="mr-2 flex flex-col">
       <input
         name="maxQuantity"
         type="number"
